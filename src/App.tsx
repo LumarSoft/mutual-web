@@ -6,9 +6,11 @@ import { LoadingSpinner } from "./shared/loading/LoadingSpinner";
 function App() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<LoadingSpinner />}>
-        <AppRouter />
-      </Suspense>
+      <main className="h-screen w-screen dark">
+        <Suspense fallback={<LoadingSpinner />}>
+          <AppRouter />
+        </Suspense>
+      </main>
     </BrowserRouter>
   );
 }

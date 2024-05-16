@@ -1,5 +1,11 @@
+import { LoginCard } from "./components/LoginCard";
+
 const LoginModule = () => {
-  return <div>Pagina de login</div>;
+  return (
+    <main className="w-full h-full bg-background flex items-center justify-center">
+      <LoginCard />
+    </main>
+  );
 };
 
 export default LoginModule;
