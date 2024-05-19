@@ -14,14 +14,15 @@ import { useState } from "react";
 import { LoadingComponent } from "@/shared/components/loading/Loading";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useStore } from "@/services/zustand/userStore";
 
 export const LoginCard = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const setUser = useStore((state) => state.setUser);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,10 +36,23 @@ export const LoginCard = () => {
     try {
       const data = await signIn(email, password);
       if (data) {
-        setUserData(data);
+        const userData = {
+          DNI: data.DNI || "",
+          admin: data.admin || false,
+          bono: data.bono || "",
+          date_subscription: data.date_subscription || "",
+          email: data.email || "",
+          instalments_Qty: data.instalments_Qty || 0,
+          last_paid: data.last_paid || "",
+          name: data.name || "",
+          tel: data.tel || "",
+          uid: data.uid || "",
+          up_to_date: data.up_to_date || false,
+        };
+        setUser(userData);
         setLoading(false);
-        console.log(data);
-        // navigate("/dashboard");
+
+        data.admin ? navigate("/admin") : navigate("/user");
       } else {
         setLoading(false);
         console.log("No user data found.");

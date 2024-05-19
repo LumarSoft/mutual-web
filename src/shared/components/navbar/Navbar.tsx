@@ -1,17 +1,29 @@
-import { FaRegUserCircle } from "react-icons/fa";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
+import { GiHamburgerMenu } from "react-icons/gi";
 
 export const Navbar = () => {
   return (
-    <nav className="w-full h-20 flex items-center justify-between px-8 border-b">
-      <div>
-        <ul className="flex gap-4 font-semibold">
-          <li>Opcion1</li>
-          <li>Opcion2</li>
-          <li>Opcion3</li>
-        </ul>
-      </div>
-      <FaRegUserCircle size={35} />
+    <nav className="w-full h-20 flex items-center justify-end px-8 border-b">
+      <DropdownNav />
     </nav>
+  );
+};
+
+const DropdownNav = () => {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <GiHamburgerMenu size={35} />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem>Cerrar sesion</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
