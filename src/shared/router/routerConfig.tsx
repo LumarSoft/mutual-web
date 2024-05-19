@@ -1,11 +1,13 @@
-import { LoginModule, NotFoundModule } from "./pageRouter";
+import { AdminModule, LoginModule, NotFoundModule } from "./pageRouter";
 
 enum ERoutes {
   LOGIN = "/",
   NOT_FOUND = "/*",
+  ADMIN = "/admin",
+  USER = "/user/:id",
 }
 
-type TActualRoutes = "Login" | "NotFound";
+type TActualRoutes = "Login" | "NotFound" | "Admin" | "User";
 
 interface IRoute {
   name: TActualRoutes;
@@ -20,11 +22,23 @@ export const routes: IRoute[] = [
     path: ERoutes.LOGIN,
     element: <LoginModule />,
   },
-
   {
     name: "NotFound",
     path: ERoutes.NOT_FOUND,
     element: <NotFoundModule />,
+  },
+];
+
+export const protectedRoutes: IRoute[] = [
+  {
+    name: "Admin",
+    path: ERoutes.ADMIN,
+    element: <AdminModule />,
+  },
+  {
+    name: "User",
+    path: ERoutes.USER,
+    element: <AdminModule />,
   },
 ];
 
