@@ -1,9 +1,20 @@
+import { getCollection } from "@/services/firebase/firestore/firestore";
+import { useEffect, useState } from "react";
+
 export const InformationCards = () => {
   const cardsList = [
     { title: "Adheridos", value: 100 },
     { title: "Deudores", value: 20 },
     { title: "Ult. Sorteo", value: "10/10/2021" },
   ];
+
+  const [totalUsers, setTotalUsers] = useState(0);
+
+  useEffect(() => {
+    getCollection("users").then((data) => {
+      setTotalUsers(data.length);
+    });
+  }, []);
 
   return (
     <section className="flex w-full justify-between gap-2">

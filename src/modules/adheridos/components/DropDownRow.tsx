@@ -7,7 +7,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { DeleteUserAlert } from "./DeleteAlert";
-export const DropDownRow = ({ uidUser }: { uidUser: string }) => {
+import { UpdateDialog } from "./updateDialog";
+import { User } from "./Columns";
+export const DropDownRow = ({ user }: { user: User }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -17,9 +19,11 @@ export const DropDownRow = ({ uidUser }: { uidUser: string }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem asChild>
-          <DeleteUserAlert uidUser={uidUser}>Eliminar usuario</DeleteUserAlert>
+          <DeleteUserAlert uidUser={user.uid}>Eliminar usuario</DeleteUserAlert>
         </DropdownMenuItem>
-        <DropdownMenuItem>Editar usuario</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <UpdateDialog user={user}>Editar usuario</UpdateDialog>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

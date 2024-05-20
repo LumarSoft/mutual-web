@@ -7,7 +7,6 @@ export interface User {
   tel: string;
   uid: string;
   last_paid: string;
-  up_to_date: boolean;
   date_subscription: string;
   bono: string;
   name: string;
@@ -42,10 +41,6 @@ export const columns: ColumnDef<User>[] = [
     header: "Cuotas",
   },
   {
-    accessorKey: "up_to_date",
-    header: "Al Dia",
-  },
-  {
     accessorKey: "last_paid",
     header: "Ultimo Pago",
   },
@@ -56,7 +51,7 @@ export const columns: ColumnDef<User>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      return <DropDownRow uidUser={row.original.uid} />;
+      return <DropDownRow user={row.original} />;
     },
   },
 ];

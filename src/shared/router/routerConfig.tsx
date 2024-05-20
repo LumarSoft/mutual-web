@@ -3,6 +3,7 @@ import {
   LoginModule,
   NotFoundModule,
   AdheridosModule,
+  SorteosModule,
 } from "./pageRouter";
 
 enum ERoutes {
@@ -10,10 +11,17 @@ enum ERoutes {
   NOT_FOUND = "/*",
   ADMIN = "/admin",
   ADHERIDOS = "/admin/adheridos",
+  SORTEOS = "/admin/sorteos",
   USER = "/user/:id",
 }
 
-type TActualRoutes = "Login" | "NotFound" | "Admin" | "User" | "Table";
+type TActualRoutes =
+  | "Login"
+  | "NotFound"
+  | "Admin"
+  | "User"
+  | "Table"
+  | "Sorteos";
 
 interface IRoute {
   name: TActualRoutes;
@@ -50,6 +58,11 @@ export const protectedRoutes: IRoute[] = [
     name: "User",
     path: ERoutes.USER,
     element: <AdminModule />,
+  },
+  {
+    name: "Sorteos",
+    path: ERoutes.SORTEOS,
+    element: <SorteosModule />,
   },
 ];
 

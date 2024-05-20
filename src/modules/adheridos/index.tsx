@@ -14,7 +14,7 @@ const TableModule = () => {
   }, []);
 
   return (
-    <main className="w-full h-full bg-background flex flex-col">
+    <main className="w-full h-full flex flex-col">
       <Navbar />
       <div className="px-2 pt-4 flex flex-col h-full sm:px-8 gap-4">
         <h2 className="text-3xl font-bold">Adheridos</h2>
