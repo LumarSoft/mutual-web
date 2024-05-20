@@ -1,5 +1,6 @@
 import {
   createUserWithEmailAndPassword,
+  deleteUser,
   getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
@@ -73,3 +74,10 @@ export const singUp = async (user: User) => {
     console.error(error);
   }
 };
+
+
+
+//Para eliminar un usuario
+// export const deleteUserFirebase = async (uid: string) => {
+//   deleteUser();
+// };
