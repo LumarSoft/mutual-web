@@ -1,12 +1,18 @@
-import { LoginModule, NotFoundModule, RegisterModule } from "./pageRouter";
+import {
+  LoginModule,
+  NotFoundModule,
+  RegisterModule,
+  UnderConstructionModule,
+} from "./pageRouter";
 
 enum ERoutes {
   LOGIN = "/",
   REGISTER = "/register",
   NOT_FOUND = "/*",
+  UNDER_CONSTRUCTION = "/under-construction",
 }
 
-type TActualRoutes = "Login" | "Register" | "NotFound";
+type TActualRoutes = "Login" | "Register" | "NotFound" | "UnderConstruction";
 
 interface IRoute {
   name: TActualRoutes;
@@ -29,7 +35,12 @@ export const routes: IRoute[] = [
   {
     name: "NotFound",
     path: ERoutes.NOT_FOUND,
-    element: <NotFoundModule/>,
+    element: <NotFoundModule />,
+  },
+  {
+    name: "UnderConstruction",
+    path: ERoutes.UNDER_CONSTRUCTION,
+    element: <UnderConstructionModule />,
   },
 ];
 
