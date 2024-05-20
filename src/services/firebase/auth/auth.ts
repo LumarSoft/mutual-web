@@ -19,7 +19,11 @@ interface User {
   date: string;
 }
 
-export const signIn = async (email: string, password: string) => {
+export const signIn = async (
+  email: string,
+  password: string,
+  loginAs: string
+) => {
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -29,7 +33,7 @@ export const signIn = async (email: string, password: string) => {
 
     const user = userCredential.user;
 
-    const docRef = doc(firestore, "users", user.uid);
+    const docRef = doc(firestore, loginAs, user.uid);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
