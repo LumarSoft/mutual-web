@@ -1,11 +1,3 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
 export const InformationCards = () => {
   const cardsList = [
     { title: "Adheridos", value: 100 },
@@ -14,16 +6,17 @@ export const InformationCards = () => {
   ];
 
   return (
-    <section className="flex w-full justify-between gap-4">
+    <section className="flex w-full justify-between gap-2">
       {cardsList.map((card, index) => (
-        <Card key={index} className="w-full">
-          <CardHeader>
-            <CardTitle className="text-zinc-600 text-xl">{card.title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription className="text-3xl text-white font-semibold">{card.value}</CardDescription>
-          </CardContent>
-        </Card>
+        <div
+          className="w-full border rounded flex flex-col px-1 py-2 sm:py-6"
+          key={index}
+        >
+          <h4 className="text-lg font-semibold text-zinc-700 text-center sm:text-start px-4 sm:text-2xl">
+            {card.title}
+          </h4>
+          <span className="text-center sm:text-2xl">{card.value}</span>
+        </div>
       ))}
     </section>
   );

@@ -19,7 +19,7 @@ const DropdownNav = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <GiHamburgerMenu size={35} />
+        <GiHamburgerMenu size={35} color="white"/>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem>Cerrar sesion</DropdownMenuItem>

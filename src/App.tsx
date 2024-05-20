@@ -9,12 +9,10 @@ import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
     <BrowserRouter>
-      <main className="h-screen w-screen dark text-white bg-background">
         <Suspense fallback={<LoadingSpinnerModule />}>
           <AppRouter />
           <ToastContainer />
         </Suspense>
-      </main>
     </BrowserRouter>
   );
 }

@@ -6,11 +6,11 @@ export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
   const { user } = useStore();
 
-  useEffect(() => {
-    if (user.uid === "") {
-      navigate("/");
-    }
-  }, [navigate, user]);
+  // useEffect(() => {
+  //   if (user.uid === "") {
+  //     navigate("/");
+  //   }
+  // }, [navigate, user]);
 
   return children;
 };

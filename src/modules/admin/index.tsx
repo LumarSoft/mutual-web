@@ -6,12 +6,12 @@ import { InputWin } from "./components/InputWin";
 
 const AdminModule = () => {
   return (
-    <main className="w-full h-full bg-background flex flex-col">
+    <main className="h-screen w-screen bg-background flex flex-col">
       <Navbar />
-      <div className="px-8 pt-4 flex flex-col gap-4 h-full">
+      <div className="px-2 py-4 flex flex-col gap-4 h-full">
         <h2 className="text-3xl font-bold">Administrador</h2>
         <InformationCards />
-        <div className="w-full h-full grid grid-cols-2 grid-rows-2 pb-8 gap-8">
+        <div className="flex flex-col gap-2 h-full sm:grid grid-cols-2 grid-rows-2 pb-8 sm:gap-8">
           <TablePreview />
           <InputNewUser />
           <InputWin />

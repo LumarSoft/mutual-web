@@ -55,7 +55,9 @@ export const LoginCard = () => {
         data.admin ? navigate("/admin") : navigate("/user");
       } else {
         setLoading(false);
-        console.log("No user data found.");
+        setEmail("");
+        setPassword("");
+        toast.error("No se encontro ningun usuario con esas creedenciales");
       }
     } catch (error) {
       console.error("Error during sign in:", error);

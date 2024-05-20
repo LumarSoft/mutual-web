@@ -15,7 +15,7 @@ import { useState } from "react";
 export const InputNewUser = () => {
   return (
     <DialogNewUser>
-      <Card className="border rounded flex items-center justify-center">
+      <Card className="border rounded flex items-center justify-center h-full">
         <h3 className="text-3xl font-semibold">Nuevo Adherente</h3>
       </Card>
     </DialogNewUser>
@@ -55,7 +55,7 @@ const DialogNewUser = ({ children }: { children: React.ReactNode }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="dark text-white">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Registrar nuevo adherente</DialogTitle>
         </DialogHeader>
