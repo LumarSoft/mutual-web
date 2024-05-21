@@ -8,21 +8,22 @@ import {
   Raffles,
 } from "./components/historicalTable/Columns";
 import { getCollection } from "@/services/firebase/firestore/firestore";
-import { DocumentData } from "firebase/firestore";
 import { FilterByPaymentStatus } from "@/shared/utils/filterUsers";
 import { User } from "../adheridos/components/Columns";
 
 const SorteosModule = () => {
   const [historicalRaffles, setHistoricalRaffles] = useState<Raffles[]>([]);
-  const [users, setUsers] = useState<DocumentData[]>([]);
-  const [usersInConditions, setUsersInConditions] = useState<DocumentData[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [usersInConditions, setUsersInConditions] = useState<User[]>(
+    []
+  );
 
   useEffect(() => {
     getCollection("raffles").then((data) => {
       setHistoricalRaffles(data as Raffles[]);
     });
     getCollection("users").then((data) => {
-      setUsers(data as DocumentData[]);
+      setUsers(data as User[]);
       setUsersInConditions(FilterByPaymentStatus(data as User[]));
     });
   }, []);
@@ -33,8 +34,11 @@ const SorteosModule = () => {
       <div className="px-2 pt-4 flex flex-col h-full sm:px-8 gap-4">
         <h2 className="text-3xl font-bold">Sorteos</h2>
         <div className="flex gap-4 flex-col md:flex-row">
-          <InputNewRaffle />
-          <DatesForRaffles />
+          <InputNewRaffle users={users} />
+          <DatesForRaffles
+            data={users}
+            usersInConditions={usersInConditions}
+          />
         </div>
         <HistoricalTable columns={columnsHistorical} data={historicalRaffles} />
       </div>
