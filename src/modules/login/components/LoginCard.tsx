@@ -51,8 +51,9 @@ export const LoginCard = () => {
         };
         setUser(userData);
         setLoading(false);
-
-        loginAs === "admins" ? navigate("/admin") : navigate("/user");
+        loginAs === "admins"
+          ? navigate("/admin")
+          : navigate(`/user/${userData.uid}`);
       } else {
         setLoading(false);
         setEmail("");
@@ -94,7 +95,7 @@ export const LoginCard = () => {
               <Label htmlFor="emailUser">Email</Label>
               <Input
                 id="emailUser"
-                placeholder="marcebenitez0607@gmail.com"
+                placeholder="ejemplo@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />

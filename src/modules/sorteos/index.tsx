@@ -15,7 +15,9 @@ import { User } from "../adheridos/components/Columns";
 const SorteosModule = () => {
   const [historicalRaffles, setHistoricalRaffles] = useState<Raffles[]>([]);
   const [users, setUsers] = useState<DocumentData[]>([]);
-  const [usersInConditions, setUsersInConditions] = useState<DocumentData[]>([]);
+  const [usersInConditions, setUsersInConditions] = useState<DocumentData[]>(
+    []
+  );
 
   useEffect(() => {
     getCollection("raffles").then((data) => {
