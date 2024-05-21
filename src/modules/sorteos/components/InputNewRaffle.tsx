@@ -15,9 +15,9 @@ export const InputNewRaffle = () => {
       <CardHeader>
         <CardTitle>Nuevo sorteo</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex flex-col gap-4">
         <CardDescription>
-          Porfavor inserte cual sera el premio a sortear
+          Ingrese el premio del sorteo
         </CardDescription>
         <Input />
         <Button>Sortear!</Button>
