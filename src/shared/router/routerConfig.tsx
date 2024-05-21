@@ -1,15 +1,14 @@
 import {
-  LoginModule,
   NotFoundModule,
   RegisterModule,
   UnderConstructionModule,
 } from "./pageRouter";
 
 enum ERoutes {
-  LOGIN = "/",
+  // LOGIN = "/",
   REGISTER = "/register",
   NOT_FOUND = "/*",
-  UNDER_CONSTRUCTION = "/under-construction",
+  UNDER_CONSTRUCTION = "/",
 }
 
 type TActualRoutes = "Login" | "Register" | "NotFound" | "UnderConstruction";
@@ -22,11 +21,11 @@ interface IRoute {
 }
 
 export const routes: IRoute[] = [
-  {
-    name: "Login",
-    path: ERoutes.LOGIN,
-    element: <LoginModule />,
-  },
+  // {
+  //   name: "Login",
+  //   path: ERoutes.LOGIN,
+  //   element: <LoginModule />,
+  // },
   {
     name: "Register",
     path: ERoutes.REGISTER,
