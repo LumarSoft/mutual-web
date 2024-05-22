@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-const DatesForRaffles = () => {
+const DatesForRaffles = ({ data, usersInConditions }) => {
   return (
     <Card className="w-full">
       <CardHeader>
