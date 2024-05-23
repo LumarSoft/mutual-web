@@ -20,6 +20,11 @@ export const InputNewRaffle = ({ users }: { users: User[] }) => {
   const [award, setAward] = useState("");
 
   const handleNewRaffle = async () => {
+    if (bonoWin.trim().length === 0 || award.trim().length === 0) {
+      toast.error("Debe completar ambos campos");
+      return;
+    }
+
     const userWin = checkExist(users, bonoWin);
 
     if (!userWin) {
@@ -46,7 +51,6 @@ export const InputNewRaffle = ({ users }: { users: User[] }) => {
       date: formattedDate,
       name: userWin.name,
     };
-
 
     await newDocument("raffles", dataForWin);
   };

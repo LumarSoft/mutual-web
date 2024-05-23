@@ -9,6 +9,7 @@ import { MoreHorizontal } from "lucide-react";
 import { DeleteUserAlert } from "./DeleteAlert";
 import { UpdateDialog } from "./updateDialog";
 import { User } from "./Columns";
+
 export const DropDownRow = ({ user }: { user: User }) => {
   return (
     <DropdownMenu>

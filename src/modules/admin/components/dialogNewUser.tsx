@@ -1,4 +1,3 @@
-import { forwardRef, ReactNode, useEffect, useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -8,16 +7,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { User } from "./Columns";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "react-toastify";
-import { updateDocument } from "@/services/firebase/firestore/firestore";
+import { singUp } from "@/services/firebase/auth/auth";
+import { useState } from "react";
 
-export const UpdateDialog = forwardRef<
-  HTMLButtonElement,
-  { children: ReactNode; user: User }
->(({ children, user }, ref) => {
+export const DialogNewUser = ({ children }: { children: React.ReactNode }) => {
   const currentDate = new Date();
   const formattedDate = `${currentDate.getFullYear()}-${(
     "0" +
@@ -39,103 +34,63 @@ export const UpdateDialog = forwardRef<
     useState(true);
   const [DateLastPaid, setDateLastPaid] = useState(formattedDate);
 
-  useEffect(() => {
-    if (user) {
-      setName(user.name);
-      setDNI(user.DNI);
-      setEmail(user.email);
-      setTel(user.tel);
-      setBono(user.bono);
-      setInstalmentsQty(user.instalments_Qty);
-      setDateSubscription(user.date_subscription);
-      setDateLastPaid(user.last_paid);
-    }
-  }, [user]);
-
-  const handleUpdate = () => {
-    if (
-      name === "" ||
-      tel === "" ||
-      bono === "" ||
-      instalmentsQty === 0 ||
-      dateSubscription === "" ||
-      DateLastPaid === ""
-    ) {
-      return toast.error("Todos los campos son obligatorios");
-    }
-
-    const updatedUser = {
-      id: user.uid,
+  const handleSubmit = () => {
+    const user = {
       name,
       DNI,
       email,
       tel,
       bono,
-      instalments_Qty: instalmentsQty,
-      date_subscription: dateSubscription,
-      date_last_paid: DateLastPaid,
+      instalmentsQty,
+      dateSubscription,
+      DateLastPaid,
     };
 
-    updateDocument("users", user.uid, updatedUser);
+    singUp("users", user);
   };
 
   return (
     <Dialog>
-      <DialogTrigger
-        ref={ref}
-        className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
-      >
-        {children}
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Actualizar adherente</DialogTitle>
+          <DialogTitle>Registrar nuevo adherente</DialogTitle>
         </DialogHeader>
         <div>
           <Label>Nombre completo</Label>
-          <Input onChange={(e) => setName(e.target.value)} value={name} />
+          <Input onChange={(e) => setName(e.target.value)} />
         </div>
         <div>
           <Label>DNI</Label>
-          <Input
-            onChange={(e) => setDNI(e.target.value)}
-            value={DNI}
-            disabled
-          />
+          <Input onChange={(e) => setDNI(e.target.value)} />
         </div>
         <div>
           <Label>Email</Label>
-          <Input
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            disabled
-          />
+          <Input onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div>
-          <Label>Teléfono</Label>
-          <Input onChange={(e) => setTel(e.target.value)} value={tel} />
+          <Label>Telefono</Label>
+          <Input onChange={(e) => setTel(e.target.value)} />
         </div>
         <div className="flex gap-4">
           <div className="w-full">
             <Label>Nro. Bono</Label>
-            <Input onChange={(e) => setBono(e.target.value)} value={bono} />
+            <Input onChange={(e) => setBono(e.target.value)} />
           </div>
           <div className="w-full">
             <Label>Plan cantidad de cuotas</Label>
             <Input
               onChange={(e) => setInstalmentsQty(Number(e.target.value))}
-              value={instalmentsQty.toString()}
             />
           </div>
         </div>
         <div className="flex">
           <div className="w-full">
-            <Label>Fecha de suscripción</Label>
+            <Label>Fecha de suscripcion</Label>
             <Input
               type="date"
               disabled={useCurrentDateForSubscription}
               onChange={(e) => setDateSubscription(e.target.value)}
-              value={dateSubscription}
             />
           </div>
           <div className="w-full text-center">
@@ -152,12 +107,11 @@ export const UpdateDialog = forwardRef<
         </div>
         <div className="w-full flex">
           <div className="w-full">
-            <Label>Fecha de último pago</Label>
+            <Label>Fecha de ultimo pago</Label>
             <Input
               type="date"
               disabled={useCurrentDateForLastPaid}
               onChange={(e) => setDateLastPaid(e.target.value)}
-              value={DateLastPaid}
             />
           </div>
           <div className="w-full text-center">
@@ -174,15 +128,13 @@ export const UpdateDialog = forwardRef<
         </div>
         <DialogFooter>
           <DialogClose
-            className="w-full py-3 rounded bg-blue-800 hover:bg-blue-900 font-bold"
-            onClick={handleUpdate}
+            className="w-full bg-blue-800 py-3 rounded hover:bg-blue-900"
+            onClick={handleSubmit}
           >
-            Actualizar
+            Registrar
           </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-});
-
-UpdateDialog.displayName = "UpdateDialog";
+};

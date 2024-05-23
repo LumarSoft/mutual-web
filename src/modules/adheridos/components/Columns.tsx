@@ -11,7 +11,7 @@ export interface User {
   bono: string;
   name: string;
   admin: boolean;
-  dni: string;
+  DNI: string;
   instalments_Qty: number;
 }
 

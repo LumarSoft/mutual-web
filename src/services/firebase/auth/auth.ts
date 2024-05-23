@@ -1,6 +1,5 @@
 import {
   createUserWithEmailAndPassword,
-  deleteUser,
   getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
@@ -17,7 +16,8 @@ interface User {
   tel: string;
   bono: string;
   instalmentsQty: number;
-  date: string;
+  dateSubscription: string;
+  DateLastPaid: string;
 }
 
 export const signIn = async (
@@ -47,9 +47,18 @@ export const signIn = async (
   }
 };
 
-export const singUp = async (user: User) => {
+export const singUp = async (collectionName: string, user: User) => {
   try {
-    const { name, DNI, email, tel, bono, instalmentsQty, date } = user;
+    const {
+      name,
+      DNI,
+      email,
+      tel,
+      bono,
+      instalmentsQty,
+      dateSubscription,
+      DateLastPaid,
+    } = user;
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -57,25 +66,21 @@ export const singUp = async (user: User) => {
     );
     const newUser = userCredential.user;
 
-    await setDoc(doc(firestore, "users", newUser.uid), {
-      admin: false,
-      bono,
-      date_subscription: date,
+    await setDoc(doc(firestore, collectionName, newUser.uid), {
+      name,
       DNI,
       email,
-      instalments_Qty: instalmentsQty,
-      last_paid: date,
-      name,
       tel,
+      bono,
+      date_subscription: dateSubscription,
+      instalments_Qty: instalmentsQty,
+      last_paid: DateLastPaid,
       uid: newUser.uid,
-      up_to_date: true,
     });
   } catch (error) {
     console.error(error);
   }
 };
-
-
 
 //Para eliminar un usuario
 // export const deleteUserFirebase = async (uid: string) => {

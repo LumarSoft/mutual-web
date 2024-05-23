@@ -14,9 +14,7 @@ import { User } from "../adheridos/components/Columns";
 const SorteosModule = () => {
   const [historicalRaffles, setHistoricalRaffles] = useState<Raffles[]>([]);
   const [users, setUsers] = useState<User[]>([]);
-  const [usersInConditions, setUsersInConditions] = useState<User[]>(
-    []
-  );
+  const [usersInConditions, setUsersInConditions] = useState<User[]>([]);
 
   useEffect(() => {
     getCollection("raffles").then((data) => {
@@ -24,7 +22,8 @@ const SorteosModule = () => {
     });
     getCollection("users").then((data) => {
       setUsers(data as User[]);
-      setUsersInConditions(FilterByPaymentStatus(data as User[]));
+      const filterUsers = FilterByPaymentStatus(data as User[]);
+      setUsersInConditions(filterUsers);
     });
   }, []);
 
@@ -35,10 +34,7 @@ const SorteosModule = () => {
         <h2 className="text-3xl font-bold">Sorteos</h2>
         <div className="flex gap-4 flex-col md:flex-row">
           <InputNewRaffle users={users} />
-          <DatesForRaffles
-            data={users}
-            usersInConditions={usersInConditions}
-          />
+          <DatesForRaffles data={users} usersInConditions={usersInConditions} />
         </div>
         <HistoricalTable columns={columnsHistorical} data={historicalRaffles} />
       </div>

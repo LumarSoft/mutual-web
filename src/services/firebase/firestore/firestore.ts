@@ -5,6 +5,7 @@ import {
   doc,
   getDocs,
   getFirestore,
+  setDoc,
 } from "firebase/firestore";
 import { app } from "../app";
 
@@ -28,5 +29,18 @@ export const newDocument = async (collectionName: string, data: object) => {
     console.log("Documento escrito con ID: ", docRef.id);
   } catch (e) {
     console.error("Error añadiendo documento: ", e);
+  }
+};
+
+export const updateDocument = async (
+  collectionName: string,
+  docId: string,
+  data: object
+) => {
+  try {
+    await setDoc(doc(firestore, collectionName, docId), data);
+    console.log("Documento actualizado con ID: ", docId);
+  } catch (e) {
+    console.error("Error actualizando documento: ", e);
   }
 };

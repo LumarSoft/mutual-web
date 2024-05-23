@@ -92,7 +92,7 @@ export function UserModule() {
                 </span>
 
                 <Label className="pt-2" htmlFor="last_paid">
-                  CUOTAS PAGAS
+                  ULTIMA CUOTA PAGA
                 </Label>
                 <span
                   id="last_paid"
