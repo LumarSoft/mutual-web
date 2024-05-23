@@ -1,18 +1,30 @@
-import { getCollection } from "@/services/firebase/firestore/firestore";
+import { User } from "@/modules/adheridos/components/Columns";
+import {
+  getCollection,
+  getLastRaffle,
+} from "@/services/firebase/firestore/firestore";
+import { FilterByPaymentStatus } from "@/shared/utils/filterUsers";
 import { useEffect, useState } from "react";
 
 export const InformationCards = () => {
-  const cardsList = [
-    { title: "Adheridos", value: 100 },
-    { title: "Deudores", value: 20 },
-    { title: "Ult. Sorteo", value: "10/10/2021" },
-  ];
-
   const [totalUsers, setTotalUsers] = useState(0);
+  const [totalUsersDebt, setTotalUsersDebt] = useState(0);
+  const [dateLastRaffle, setDateLastRaffle] = useState("");
+
+  const cardsList = [
+    { title: "Adheridos", value: totalUsers },
+    { title: "Deudores", value: totalUsersDebt },
+    { title: "Ult. Sorteo", value: dateLastRaffle },
+  ];
 
   useEffect(() => {
     getCollection("users").then((data) => {
       setTotalUsers(data.length);
+      const filterUsers = FilterByPaymentStatus(data as User[]);
+      setTotalUsersDebt(filterUsers.length);
+    });
+    getLastRaffle().then((raffle) => {
+      setDateLastRaffle(raffle?.date);
     });
   }, []);
 

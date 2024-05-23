@@ -13,7 +13,6 @@ import { app } from "../app";
 
 export const firestore = getFirestore(app);
 
-
 export const getCollection = async (collectionName: string) => {
   const querySnapshot = await getDocs(collection(firestore, collectionName));
   const data = querySnapshot.docs.map((doc) => doc.data());
@@ -42,6 +41,15 @@ export const getLastRaffle = async () => {
   } catch (error) {
     console.error("Error al obtener el último sorteo:", error);
     return null;
+  }
+};
+
+export const newDocument = async (collectionName: string, data: object) => {
+  try {
+    await setDoc(doc(firestore, collectionName), data);
+    console.log("Documento creado en la colección: ", collectionName);
+  } catch (e) {
+    console.error("Error creando documento: ", e);
   }
 };
 

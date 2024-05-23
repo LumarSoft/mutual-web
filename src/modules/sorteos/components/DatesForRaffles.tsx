@@ -23,18 +23,14 @@ const DatesForRaffles = ({
         <CardDescription>
           Datos importantes sobre la actualidad de los adheridos
         </CardDescription>
-        <div className="flex w-full justify-between h-full">
-          <div className="flex flex-col">
+        <div className="flex w-full justify-center gap-4 h-full">
+          <div className="flex flex-col items-center">
             <span className="text-lg font-bold">Total de adheridos</span>
             <span>{data.length}</span>
           </div>
-          <div className="flex flex-col">
-            <span className="text-lg font-bold">Total de adheridos al dia</span>
+          <div className="flex flex-col items-center">
+            <span className="text-lg font-bold">Al dia</span>
             <span>{usersInConditions.length}</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-lg font-bold">Total de adheridos</span>
-            <span>{data.length}</span>
           </div>
         </div>
       </CardContent>
