@@ -1,17 +1,18 @@
 import {
-  addDoc,
   collection,
   deleteDoc,
   doc,
   getDocs,
   getFirestore,
   setDoc,
+  query,
+  orderBy,
+  limit,
 } from "firebase/firestore";
 import { app } from "../app";
 
 export const firestore = getFirestore(app);
 
-// para obtener toda una coleccion
 
 export const getCollection = async (collectionName: string) => {
   const querySnapshot = await getDocs(collection(firestore, collectionName));
@@ -23,12 +24,24 @@ export const deleteDocument = async (collectionName: string, docId: string) => {
   await deleteDoc(doc(firestore, collectionName, docId));
 };
 
-export const newDocument = async (collectionName: string, data: object) => {
+export const getLastRaffle = async () => {
   try {
-    const docRef = await addDoc(collection(firestore, collectionName), data);
-    console.log("Documento escrito con ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error añadiendo documento: ", e);
+    const q = query(
+      collection(firestore, "raffles"),
+      orderBy("date", "desc"),
+      limit(1)
+    );
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const lastRaffleDoc = querySnapshot.docs[0];
+      return lastRaffleDoc.data();
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error al obtener el último sorteo:", error);
+    return null;
   }
 };
 
