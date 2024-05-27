@@ -60,6 +60,15 @@ export const updateDocument = async (
   }
 };
 
+export const deleteDocument = async (collectionName: string, docId: string) => {
+  try {
+    await deleteDoc(doc(firestore, collectionName, docId));
+    console.log("Documento eliminado con ID: ", docId);
+  } catch (e) {
+    console.error("Error eliminando documento: ", e);
+  }
+};
+
 export const getDocumentsByField = async (
   collectionName: string,
   field: string,

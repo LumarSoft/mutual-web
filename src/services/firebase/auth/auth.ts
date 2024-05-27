@@ -20,7 +20,7 @@ interface User {
   DateLastPaid: string;
 }
 
-export const signIn = async (
+export const signInAsAdmin = async (
   email: string,
   password: string,
   loginAs: string

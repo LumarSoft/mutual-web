@@ -16,6 +16,8 @@ export const DeleteUserAlert = forwardRef<
   HTMLButtonElement,
   { children: ReactNode; uidUser: string }
 >(({ children, uidUser }, ref) => {
+
+
   const handleDelete = async () => {
     await deleteDocument("users", uidUser);
   };
