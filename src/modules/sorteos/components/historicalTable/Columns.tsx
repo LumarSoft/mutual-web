@@ -1,27 +1,49 @@
+import { User } from "@/shared/types/users";
 import { ColumnDef } from "@tanstack/react-table";
 
-export interface Raffles {
-  name: string;
-  bono_win: string;
-  date: string;
-  award: string;
-}
-
-export const columnsHistorical: ColumnDef<Raffles>[] = [
+export const columnsHistorical: ColumnDef<User>[] = [
   {
-    accessorKey: "name",
-    header: "Nombre",
+    accessorKey: "apellido",
+    header: "Apellido",
   },
   {
-    accessorKey: "bono_win",
-    header: "nro. Bono",
+    accessorKey: "documento",
+    header: "Documento",
   },
   {
-    accessorKey: "date",
-    header: "Fecha",
+    accessorKey: "cliente",
+    header: "Cliente",
   },
   {
-    accessorKey: "award",
-    header: "Premio",
+    accessorKey: "entidad",
+    header: "Entidad",
   },
+  {
+    accessorKey: "codigo",
+    header: "Codigo",
+  },
+  {
+    accessorKey: "fec_mae",
+    header: "Fec Mae",
+  },
+  {
+    accessorKey: "cuopag",
+    header: "Cuotas pagas",
+  },
+  {
+    accessorKey: "cuopen",
+    header: "Cuotas pendientes",
+  },
+  {
+    accessorKey: "ult_cob",
+    header: "Ultimo cobro",
+  },
+  {
+    accessorKey: "fupdate",
+    header: "Fupdate",
+  },
+  { accessorKey: "fupd", header: "Fupd" },
+  { accessorKey: "ganador", header: "Ganador" },
+  { accessorKey: "fec_gan", header: "Fec Gan" },
+  { accessorKey: "pre_pen", header: "Pre Pen" },
 ];

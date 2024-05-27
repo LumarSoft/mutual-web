@@ -1,42 +1,43 @@
 import { Navbar } from "@/shared/components/navbar/Navbar";
 import { InputNewRaffle } from "./components/InputNewRaffle";
-import DatesForRaffles from "./components/DatesForRaffles";
 import { HistoricalTable } from "./components/historicalTable/Table";
+import { columnsHistorical } from "./components/historicalTable/Columns";
 import { useEffect, useState } from "react";
-import {
-  columnsHistorical,
-  Raffles,
-} from "./components/historicalTable/Columns";
-import { getCollection } from "@/services/firebase/firestore/firestore";
-import { FilterByPaymentStatus } from "@/shared/utils/filterUsers";
-import { User } from "../adheridos/components/Columns";
+import { filterWinningUsers } from "@/services/firebase/firestore/firestore";
+import { User } from "@/shared/types/users";
 
 const SorteosModule = () => {
-  const [historicalRaffles, setHistoricalRaffles] = useState<Raffles[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
-  const [usersInConditions, setUsersInConditions] = useState<User[]>([]);
+  const [winnersHistory, setWinnersHistory] = useState<User[]>([]);
 
   useEffect(() => {
-    getCollection("raffles").then((data) => {
-      setHistoricalRaffles(data as Raffles[]);
-    });
-    getCollection("users").then((data) => {
-      setUsers(data as User[]);
-      const filterUsers = FilterByPaymentStatus(data as User[]);
-      setUsersInConditions(filterUsers);
+    filterWinningUsers("users", "fec_gan", "").then((data) => {
+      const userData = data.map((doc) => ({
+        apellido: doc.apellido,
+        documento: doc.documento,
+        cliente: doc.cliente,
+        entidad: doc.entidad,
+        codigo: doc.codigo,
+        fec_mae: doc.fec_mae,
+        cuopag: doc.cuopag,
+        cuopen: doc.cuopen,
+        ult_cob: doc.ult_cob,
+        fupdate: doc.fupdate,
+        fupd: doc.fupd,
+        ganador: doc.ganador,
+        fec_gan: doc.fec_gan,
+        pre_pen: doc.pre_pen,
+      }));
+      setWinnersHistory(userData);
     });
   }, []);
 
   return (
-    <main className="w-screen h-screen flex flex-col">
+    <main className="w-screen flex flex-col">
       <Navbar />
       <div className="px-2 pt-4 flex flex-col h-full sm:px-8 gap-4">
         <h2 className="text-3xl font-bold">Sorteos</h2>
-        <div className="flex gap-4 flex-col md:flex-row">
-          <InputNewRaffle users={users} />
-          <DatesForRaffles data={users} usersInConditions={usersInConditions} />
-        </div>
-        <HistoricalTable columns={columnsHistorical} data={historicalRaffles} />
+        <InputNewRaffle />
+        <HistoricalTable data={winnersHistory} columns={columnsHistorical} />
       </div>
     </main>
   );

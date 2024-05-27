@@ -17,16 +17,16 @@ export const InformationCards = () => {
     { title: "Ult. Sorteo", value: dateLastRaffle },
   ];
 
-  useEffect(() => {
-    getCollection("users").then((data) => {
-      setTotalUsers(data.length);
-      const filterUsers = FilterByPaymentStatus(data as User[]);
-      setTotalUsersDebt(filterUsers.length);
-    });
-    getLastRaffle().then((raffle) => {
-      setDateLastRaffle(raffle?.date);
-    });
-  }, []);
+  // useEffect(() => {
+  //   getCollection("users").then((data) => {
+  //     setTotalUsers(data.length);
+  //     const filterUsers = FilterByPaymentStatus(data as User[]);
+  //     setTotalUsersDebt(filterUsers.length);
+  //   });
+  //   getLastRaffle().then((raffle) => {
+  //     setDateLastRaffle(raffle?.date);
+  //   });
+  // }, []);
 
   return (
     <section className="flex w-full justify-between gap-2">

@@ -5,6 +5,7 @@ import {
   AdheridosModule,
   SorteosModule,
   UserModule,
+  ExcelModule,
 } from "./pageRouter";
 
 enum ERoutes {
@@ -13,6 +14,7 @@ enum ERoutes {
   ADMIN = "/admin",
   ADHERIDOS = "/admin/adheridos",
   SORTEOS = "/admin/sorteos",
+  EXCEL = "/admin/excel",
   USER = "/user/:id",
 }
 
@@ -22,7 +24,8 @@ type TActualRoutes =
   | "Admin"
   | "User"
   | "Adheridos"
-  | "Sorteos";
+  | "Sorteos"
+  | "Excel";
 
 interface IRoute {
   name: TActualRoutes;
@@ -56,14 +59,19 @@ export const protectedRoutes: IRoute[] = [
     element: <AdheridosModule />,
   },
   {
-    name: "User",
-    path: ERoutes.USER,
-    element: <UserModule />,
-  },
-  {
     name: "Sorteos",
     path: ERoutes.SORTEOS,
     element: <SorteosModule />,
+  },
+  {
+    name: "Excel",
+    path: ERoutes.EXCEL,
+    element: <ExcelModule />,
+  },
+  {
+    name: "User",
+    path: ERoutes.USER,
+    element: <UserModule />,
   },
 ];
 

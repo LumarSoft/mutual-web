@@ -1,53 +1,53 @@
 // Archivo principal con la definición de las columnas
 import { ColumnDef } from "@tanstack/react-table";
 import { DropDownRow } from "./DropDownRow";
-
-export interface User {
-  email: string;
-  tel: string;
-  uid: string;
-  last_paid: string;
-  date_subscription: string;
-  bono: string;
-  name: string;
-  admin: boolean;
-  DNI: string;
-  instalments_Qty: number;
-}
+import { User } from "@/shared/types/users";
 
 export const columns: ColumnDef<User>[] = [
   {
-    accessorKey: "name",
-    header: "Nombre",
+    accessorKey: "apellido",
+    header: "Apellido",
   },
   {
-    accessorKey: "DNI",
-    header: "DNI",
+    accessorKey: "documento",
+    header: "Documento",
   },
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: "cliente",
+    header: "Cliente",
   },
   {
-    accessorKey: "tel",
-    header: "Telefono",
+    accessorKey: "entidad",
+    header: "Entidad",
   },
   {
-    accessorKey: "date_subscription",
-    header: "Fecha de Suscripcion",
+    accessorKey: "codigo",
+    header: "Codigo",
   },
   {
-    accessorKey: "instalments_Qty",
-    header: "Cuotas",
+    accessorKey: "fec_mae",
+    header: "Fec Mae",
   },
   {
-    accessorKey: "last_paid",
-    header: "Ultimo Pago",
+    accessorKey: "cuopag",
+    header: "Cuotas pagas",
   },
   {
-    accessorKey: "bono",
-    header: "nro. Bono",
+    accessorKey: "cuopen",
+    header: "Cuotas pendientes",
   },
+  {
+    accessorKey: "ult_cob",
+    header: "Ultimo cobro",
+  },
+  {
+    accessorKey: "fupdate",
+    header: "Fupdate",
+  },
+  { accessorKey: "fupd", header: "Fupd" },
+  { accessorKey: "ganador", header: "Ganador" },
+  { accessorKey: "fec_gan", header: "Fec Gan" },
+  { accessorKey: "pre_pen", header: "Pre Pen" },
   {
     id: "actions",
     cell: ({ row }) => {

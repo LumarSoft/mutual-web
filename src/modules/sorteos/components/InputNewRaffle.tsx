@@ -8,51 +8,21 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User } from "@/modules/adheridos/components/Columns";
-import { newDocument } from "@/services/firebase/firestore/firestore";
-import { checkExist, isUserUpToDate } from "@/shared/utils/checkWin";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { DialogQR } from "./dialogQR";
+import { newWinner } from "@/services/firebase/firestore/firestore";
 
-export const InputNewRaffle = ({ users }: { users: User[] }) => {
-  const [bonoWin, setBonoWin] = useState("");
+export const InputNewRaffle = () => {
+  const [numberClient, setNumberClient] = useState("");
   const [award, setAward] = useState("");
 
   const handleNewRaffle = async () => {
-    if (bonoWin.trim().length === 0 || award.trim().length === 0) {
+    if (numberClient.trim().length === 0 || award.trim().length === 0) {
       toast.error("Debe completar ambos campos");
       return;
     }
-
-    const userWin = checkExist(users, bonoWin);
-
-    if (!userWin) {
-      toast.error("El bono ingresado no existe");
-      return;
-    }
-
-    const upToDate = isUserUpToDate(userWin);
-
-    if (!upToDate) {
-      toast.error("El usuario no esta al dia con el pago");
-      return;
-    }
-
-    const currentDate = new Date();
-    const formattedDate = `${("0" + currentDate.getDate()).slice(-2)}/${(
-      "0" +
-      (currentDate.getMonth() + 1)
-    ).slice(-2)}/${currentDate.getFullYear()}`;
-
-    const dataForWin = {
-      award: award,
-      bono_win: bonoWin,
-      date: formattedDate,
-      name: userWin.name,
-    };
-
-    await newDocument("raffles", dataForWin);
+    newWinner(numberClient, award);
   };
 
   return (
@@ -63,8 +33,8 @@ export const InputNewRaffle = ({ users }: { users: User[] }) => {
       <CardContent className="flex gap-4">
         <div className="w-full">
           <Label>
-            Escriba el nro. de bono del ganador
-            <Input onChange={(e) => setBonoWin(e.target.value)} />
+            Escriba el nro. del ganador
+            <Input onChange={(e) => setNumberClient(e.target.value)} />
           </Label>
         </div>
         <div className="w-full">
