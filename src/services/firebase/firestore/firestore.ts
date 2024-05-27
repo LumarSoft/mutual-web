@@ -16,15 +16,6 @@ import { toast } from "react-toastify";
 
 export const firestore = getFirestore(app);
 
-export const getCollection = async (collectionName: string) => {
-  const querySnapshot = await getDocs(collection(firestore, collectionName));
-  const data = querySnapshot.docs.map((doc) => doc.data());
-  return data;
-};
-
-export const deleteDocument = async (collectionName: string, docId: string) => {
-  await deleteDoc(doc(firestore, collectionName, docId));
-};
 
 export const getLastRaffle = async () => {
   try {

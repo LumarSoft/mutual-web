@@ -27,7 +27,6 @@ export const LoginCard = () => {
   const setUser = useStore((state) => state.setUser);
 
   const handleSubmit = async () => {
-    console.log("email:", email, "password:", password, "loginAs:", loginAs);
 
     if (email.trim().length === 0 || password.trim().length === 0) {
       toast.error("Debe rellenar los dos campos");

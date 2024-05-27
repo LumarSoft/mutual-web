@@ -1,7 +1,7 @@
 import { Navbar } from "@/shared/components/navbar/Navbar";
 import { useState } from "react";
-import { TableComponent } from "./components/Table";
-import { columns } from "./components/Columns";
+import { TableComponent } from "./components/table/Table";
+import { columns } from "./components/table/Columns";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";

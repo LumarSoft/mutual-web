@@ -5,7 +5,7 @@ import {
   CardContent,
   CardTitle,
 } from "@/components/ui/card";
-import { User } from "@/modules/adheridos/components/Columns";
+import { User } from "@/modules/adheridos/components/table/Columns";
 
 const DatesForRaffles = ({
   data,

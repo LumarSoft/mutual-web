@@ -81,8 +81,3 @@ export const singUp = async (collectionName: string, user: User) => {
     console.error(error);
   }
 };
-
-//Para eliminar un usuario
-// export const deleteUserFirebase = async (uid: string) => {
-//   deleteUser();
-// };

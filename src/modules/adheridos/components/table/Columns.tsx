@@ -1,6 +1,6 @@
 // Archivo principal con la definición de las columnas
 import { ColumnDef } from "@tanstack/react-table";
-import { DropDownRow } from "./DropDownRow";
+import { DropDownRow } from "../DropDownRow";
 import { User } from "@/shared/types/users";
 
 export const columns: ColumnDef<User>[] = [
