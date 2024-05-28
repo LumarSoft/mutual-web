@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { signIn } from "@/services/firebase/auth/auth";
+import { signInAsAdmin, signInAsUser } from "@/services/firebase/auth/auth";
 import { useState } from "react";
 import { LoadingComponent } from "@/shared/components/loading/Loading";
 import { toast } from "react-toastify";
@@ -18,7 +18,7 @@ import { useStore } from "@/services/zustand/userStore";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const LoginCard = () => {
-  const [email, setEmail] = useState("");
+  const [field1, setField1] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [loginAs, setLoginAs] = useState("users");
@@ -27,37 +27,46 @@ export const LoginCard = () => {
   const setUser = useStore((state) => state.setUser);
 
   const handleSubmit = async () => {
-
-    if (email.trim().length === 0 || password.trim().length === 0) {
+    if (field1.trim().length === 0 || password.trim().length === 0) {
       toast.error("Debe rellenar los dos campos");
       return;
     }
 
     setLoading(true);
+
     try {
-      const data = await signIn(email, password, loginAs);
+      let data;
+      if (loginAs === "admins") {
+        data = await signInAsAdmin(field1, password, loginAs);
+      } else {
+        data = await signInAsUser(field1, password);
+      }
+
       if (data) {
         const userData = {
-          DNI: data.DNI || "",
-          admin: data.admin || false,
-          bono: data.bono || "",
-          date_subscription: data.date_subscription || "",
-          email: data.email || "",
-          instalments_Qty: data.instalments_Qty || 0,
-          last_paid: data.last_paid || "",
-          name: data.name || "",
-          tel: data.tel || "",
-          uid: data.uid || "",
-          up_to_date: data.up_to_date || false,
+          apellido: data.apellido || "",
+          documento: data.documento || "",
+          cliente: data.cliente || "",
+          entidad: data.entidad || "",
+          codigo: data.codigo || "",
+          fec_mae: data.fec_mae || "",
+          cuopag: data.cuopag || "",
+          cuopen: data.cuopen || "",
+          ult_cob: data.ult_cob || "",
+          fupdate: data.fupdate || "",
+          fupd: data.fupd || "",
+          ganador: data.ganador || "",
+          fec_gan: data.fec_gan || "",
+          pre_pen: data.pre_pen || "",
         };
         setUser(userData);
         setLoading(false);
         loginAs === "admins"
           ? navigate("/admin")
-          : navigate(`/user/${userData.uid}`);
+          : navigate(`/user/${userData.cliente}`);
       } else {
         setLoading(false);
-        setEmail("");
+        setField1("");
         setPassword("");
         toast.error("No se encontró ningún usuario con esas credenciales");
       }
@@ -93,20 +102,20 @@ export const LoginCard = () => {
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="space-y-1">
-              <Label htmlFor="emailUser">Email</Label>
+              <Label htmlFor="emailUser">Número de socio</Label>
               <Input
                 id="emailUser"
-                placeholder="ejemplo@gmail.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="123456"
+                value={field1}
+                onChange={(e) => setField1(e.target.value)}
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="passwordUser">Contraseña</Label>
+              <Label htmlFor="passwordUser">Documento</Label>
               <Input
                 id="passwordUser"
-                type="password"
-                placeholder="********"
+                // type="password"
+                placeholder="Tu documento aquí"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -132,8 +141,8 @@ export const LoginCard = () => {
                 id="emailAdmin"
                 type="text"
                 placeholder="bodinidev@gmail.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={field1}
+                onChange={(e) => setField1(e.target.value)}
               />
             </div>
             <div className="space-y-1">

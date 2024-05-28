@@ -5,7 +5,15 @@ import {
 } from "firebase/auth";
 import { app } from "../app";
 import { firestore } from "../firestore/firestore";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 
 const auth = getAuth(app);
 
@@ -20,7 +28,7 @@ interface User {
   DateLastPaid: string;
 }
 
-export const signIn = async (
+export const signInAsAdmin = async (
   email: string,
   password: string,
   loginAs: string
@@ -39,6 +47,25 @@ export const signIn = async (
 
     if (docSnap.exists()) {
       return docSnap.data();
+    } else {
+      console.log("No such document!");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const signInAsUser = async (socioNumber: string, document: string) => {
+  try {
+    const q = query(
+      collection(firestore, "users"),
+      where("cliente", "==", socioNumber),
+      where("documento", "==", document)
+    );
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      return querySnapshot.docs[0].data();
     } else {
       console.log("No such document!");
     }

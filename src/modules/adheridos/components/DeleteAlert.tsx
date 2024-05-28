@@ -10,14 +10,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { deleteDocument } from "@/services/firebase/firestore/firestore";
+// import { deleteDocument } from "@/services/firebase/firestore/firestore";
 
 export const DeleteUserAlert = forwardRef<
   HTMLButtonElement,
   { children: ReactNode; uidUser: string }
 >(({ children, uidUser }, ref) => {
   const handleDelete = async () => {
-    await deleteDocument("users", uidUser);
+    // await deleteDocument("users", uidUser);
   };
 
   return (

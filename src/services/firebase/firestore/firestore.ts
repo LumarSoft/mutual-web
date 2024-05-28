@@ -1,6 +1,5 @@
 import {
   collection,
-  deleteDoc,
   doc,
   getDocs,
   getFirestore,
@@ -15,7 +14,6 @@ import { app } from "../app";
 import { toast } from "react-toastify";
 
 export const firestore = getFirestore(app);
-
 
 export const getLastRaffle = async () => {
   try {
