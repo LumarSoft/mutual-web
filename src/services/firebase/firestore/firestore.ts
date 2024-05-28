@@ -9,6 +9,7 @@ import {
   limit,
   where,
   updateDoc,
+  deleteDoc
 } from "firebase/firestore";
 import { app } from "../app";
 import { toast } from "react-toastify";
@@ -55,6 +56,15 @@ export const updateDocument = async (
     console.log("Documento actualizado con ID: ", docId);
   } catch (e) {
     console.error("Error actualizando documento: ", e);
+  }
+};
+
+export const deleteDocument = async (collectionName: string, docId: string) => {
+  try {
+    await deleteDoc(doc(firestore, collectionName, docId));
+    console.log("Documento eliminado con ID: ", docId);
+  } catch (e) {
+    console.error("Error eliminando documento: ", e);
   }
 };
 
