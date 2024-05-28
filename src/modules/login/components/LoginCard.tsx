@@ -31,15 +31,6 @@ export const LoginCard = () => {
       toast.error("Debe rellenar los dos campos");
       return;
     }
-    
-    // Primero validar si se entra como usuario o como administrador.
-
-    // Si entra como administrador Usar la funcion signInAsAdmin
-
-    // Si entra como usuario usar la funcion signInAsUser (crearla)
-
-    // Una vez hecho eso, guardar bien la respuesta en el contexto (si es admin va a haber menos datos que si es usuario)
-
 
     setLoading(true);
 
