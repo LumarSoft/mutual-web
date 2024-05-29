@@ -1,14 +1,14 @@
 export interface RowExcel {
-    documento: number;
+    documento: string;
     apellido:  string;
-    cliente:   number;
-    entidad:   number;
-    codigo:    number;
-    fec_mae:   number;
-    ganador:   number;
-    cuopag:    number;
-    cuopen:    number;
+    cliente:   string;
+    entidad:   string;
+    codigo:    string;
+    fec_mae:   string;
+    ganador:   string;
+    cuopag:    string;
+    cuopen:    string;
     ult_cob:   string;
-    fupdate:   number;
-    fupd:      number;
+    fupdate:   string;
+    fupd:      string;
 }

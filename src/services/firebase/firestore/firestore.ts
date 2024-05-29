@@ -208,11 +208,30 @@ export const uploadExcelInFirestore = async (file: File) => {
 
       await Promise.all(deletePromises);
 
+      // Poner todos los campos de los objetos de dentro de Data en formato string
+
+      const dataString = data.map((item) => {
+        const newItem: RowExcel = {
+          documento: String(item.documento),
+          apellido: String(item.apellido),
+          cliente: String(item.cliente),
+          entidad: String(item.entidad),
+          codigo: String(item.codigo),
+          fec_mae: String(item.fec_mae),
+          ganador: String(item.ganador),
+          cuopag: String(item.cuopag),
+          cuopen: String(item.cuopen),
+          ult_cob: String(item.ult_cob),
+          fupdate: String(item.fupdate),
+          fupd: String(item.fupd),
+        };
+        return newItem;
+      });
+
       // Cargar nuevos datos en la colección users con el id como la propiedad cliente
-      const uploadPromises: Promise<void>[] = data.map((item) => {
+      const uploadPromises: Promise<void>[] = dataString.map((item) => {
         const docRef = doc(usersCollectionRef, String(item.cliente));
         return setDoc(docRef, item);
-        
       });
 
       await Promise.all(uploadPromises);
@@ -223,5 +242,3 @@ export const uploadExcelInFirestore = async (file: File) => {
       console.error("Error al cargar el archivo en Firestore:", error);
     });
 };
-
- // 445060
