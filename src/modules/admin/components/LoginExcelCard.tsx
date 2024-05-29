@@ -8,7 +8,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { uploadExcelInFirestore } from "@/services/firebase/firestore/firestore";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export const LoginExcelCard = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -22,9 +24,10 @@ export const LoginExcelCard = () => {
 
   const handleUpload = () => {
     if (!file) {
-      return;
+      return toast.error("Por favor seleccione un archivo");
     }
 
+    uploadExcelInFirestore(file);
   };
 
   return (

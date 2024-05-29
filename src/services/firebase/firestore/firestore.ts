@@ -10,10 +10,11 @@ import {
   where,
   updateDoc,
   deleteDoc,
+  writeBatch,
 } from "firebase/firestore";
 import { app } from "../app";
 import { toast } from "react-toastify";
-import * as xlsx from "xlsx";
+import * as XLSX from "xlsx";
 
 export const firestore = getFirestore(app);
 
@@ -165,20 +166,70 @@ export const newWinner = async (client: string, award: string) => {
   }
 };
 
+
+
+
 export const uploadExcelInFirestore = async (file: File) => {
-  //Primero creamos una promesa a resolver
-
-  const promise = new Promise<any[]>((resolve, reject) => {
+  try {
     const fileReader = new FileReader();
-    fileReader.readAsArrayBuffer(file);
 
-    fileReader.onload = (e) => {
-      if (!e.target) {
-        return reject("Error al leer el archivo");
+    const promise = new Promise((resolve, reject) => {
+      fileReader.readAsArrayBuffer(file);
+
+      fileReader.onload = (e) => {
+        if (!e.target) {
+          return reject("Error al leer el archivo");
+        }
+
+        const bufferArray = e.target.result;
+        const wb = XLSX.read(bufferArray, { type: "buffer" });
+        const wsname = wb.SheetNames[0];
+        const ws = wb.Sheets[wsname];
+
+        const data = XLSX.utils.sheet_to_json(ws);
+
+        resolve(data);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+
+    const data = await promise;
+
+    // Ahora una vez que ya tenemos todos los datos en JSON, procedemos a actualizar la colección de usuarios de Firestore.
+    const batch = writeBatch(firestore); // Usamos writeBatch para crear una instancia de batch
+    const usersCollectionRef = collection(firestore, "usuarios");
+
+    for (const record of data) {
+      const docRef = doc(usersCollectionRef, record.id); // Suponiendo que el documento tiene una propiedad 'id' que utilizamos como ID de documento
+
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        // Actualiza el documento existente
+        batch.update(docRef, record);
+      } else {
+        // Crea un nuevo documento si no existe
+        batch.set(docRef, record);
       }
+    }
 
-      const bufferArray = e.target.result;
-    };
-  });
-
+    await batch.commit();
+    toast.success("Datos actualizados en Firestore correctamente");
+  } catch (error) {
+    toast.error("Error al actualizar los datos en Firestore: " + error.message);
+    console.error("Error al procesar los documentos: ", error);
+  }
 };
+
+
+
+const getWinner = () =>{
+  // Buscar quien fue el ultimo ganador en la coleccion users
+}
+
+const getAllTel = () =>{
+  // Buscar en la coleccion tel todos los numeros
+}
