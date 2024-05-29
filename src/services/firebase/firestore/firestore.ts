@@ -9,10 +9,11 @@ import {
   limit,
   where,
   updateDoc,
-  deleteDoc
+  deleteDoc,
 } from "firebase/firestore";
 import { app } from "../app";
 import { toast } from "react-toastify";
+import * as xlsx from "xlsx";
 
 export const firestore = getFirestore(app);
 
@@ -162,4 +163,22 @@ export const newWinner = async (client: string, award: string) => {
     console.error("Error getting documents: ", error);
     throw new Error("Error fetching documents");
   }
+};
+
+export const uploadExcelInFirestore = async (file: File) => {
+  //Primero creamos una promesa a resolver
+
+  const promise = new Promise<any[]>((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsArrayBuffer(file);
+
+    fileReader.onload = (e) => {
+      if (!e.target) {
+        return reject("Error al leer el archivo");
+      }
+
+      const bufferArray = e.target.result;
+    };
+  });
+
 };

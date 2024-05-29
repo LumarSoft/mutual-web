@@ -3,7 +3,6 @@ import {
   LoginModule,
   NotFoundModule,
   UserModule,
-  ExcelModule,
 } from "./pageRouter";
 
 enum ERoutes {
@@ -52,11 +51,6 @@ export const protectedRoutes: IRoute[] = [
     element: <AdminModule />,
   },
 
-  {
-    name: "Excel",
-    path: ERoutes.EXCEL,
-    element: <ExcelModule />,
-  },
   {
     name: "User",
     path: ERoutes.USER,

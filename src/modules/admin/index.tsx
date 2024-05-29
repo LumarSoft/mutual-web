@@ -1,8 +1,5 @@
 import { Navbar } from "@/shared/components/navbar/Navbar";
 import { LoginExcelCard } from "./components/LoginExcelCard";
-// import { TablePreview } from "./components/TablePreview";
-// import { InputNewUser } from "./components/InputNewUser";
-// import { NewRaffle } from "./components/InputWin";
 
 const AdminModule = () => {
   return (
