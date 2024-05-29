@@ -10,25 +10,29 @@ import {
 } from "@/components/ui/dialog";
 
 export const DialogWhatsapp = () => {
-  const handleSend = async () => {
-
-    
-  };
+  const handleSend = async () => {};
 
   return (
     <Dialog>
-      <DialogTrigger>Enviar resultados por whatsapp</DialogTrigger>
+      <DialogTrigger className="w-full bg-green-800 hover:bg-green-900 py-3 rounded">
+        <b>Enviar resultados por whatsapp</b>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Escanee el QR para poder enviar el mensaje</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+          <DialogTitle className="w-full text-center">QR para conectar al bot de <span className="text-green-500">Whatsapp</span></DialogTitle>
+          <DialogDescription className="p-1">
+            <span className="text-red-500">RECORDATORIO:</span> El QR se actualiza cada 1 minuto. Recargar la pagina
+            de ser necesario.
           </DialogDescription>
-          <DialogDescription>Aca iria el QR</DialogDescription>
+          <DialogDescription className="flex justify-center items-center p-1">
+            <img src="http://localhost:3008/" className="p-4" />
+          </DialogDescription>
         </DialogHeader>
         <DialogFooter className="w-full">
-          <DialogClose className="w-full bg-green-800 hover:bg-green-900 py-3 rounded" onClick={handleSend}>
+          <DialogClose
+            className="w-full bg-green-800 hover:bg-green-900 py-3 rounded"
+            onClick={handleSend}
+          >
             Enviar mensaje
           </DialogClose>
         </DialogFooter>
