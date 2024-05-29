@@ -7,16 +7,28 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { User } from "@/shared/types/users";
 
 export const UserInfoCard = () => {
+  const { logout } = useStore();
   const user = useStore((state) => state.user);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
+  const isUser = (user: any): user is User => "apellido" in user;
 
   return (
     <main className="flex justify-center items-center mt-10 mx-4">
-      <Card className="w-[650px]">
+      <Card className="w-[650px] mb-10">
         <CardHeader>
           <CardTitle className="text-center text-4xl">{`Hola, ${
-            user?.apellido || "Usuario"
+            isUser(user) ? user.apellido : "Usuario"
           }!`}</CardTitle>
           <CardDescription className="text-center">
             A continuación se mostrarán sus datos. Cualquier modificación que
@@ -24,10 +36,10 @@ export const UserInfoCard = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {user ? (
+          {isUser(user) ? (
             <form>
               <div className="grid w-full items-center gap-4">
-                <div className="flex flex-col space-y-2.5">
+                <div className="flex flex-col space-y-2">
                   <Label className="pt-2" htmlFor="apellido">
                     Apellido
                   </Label>
@@ -78,18 +90,8 @@ export const UserInfoCard = () => {
                     {user.cuopen}
                   </span>
 
-                  <Label className="pt-2" htmlFor="ult_cob">
-                    Último Cobro
-                  </Label>
-                  <span
-                    id="ult_cob"
-                    className="text-white border border-gray-800 rounded p-2 font-medium"
-                  >
-                    {user.ult_cob}
-                  </span>
-
                   <Label className="pt-2" htmlFor="fupdate">
-                    Última Actualización
+                    Última Actualización del Sistema
                   </Label>
                   <span
                     id="fupdate"
@@ -97,6 +99,41 @@ export const UserInfoCard = () => {
                   >
                     {user.fupdate}
                   </span>
+
+                  <Label className="pt-2" htmlFor="ganador">
+                    Ganador
+                  </Label>
+                  <span
+                    id="ganador"
+                    className="text-white border border-gray-800 rounded p-2 font-medium"
+                  >
+                    {user.ganador === "1" ? (
+                      <span id="ganador">Si!</span>
+                    ) : (
+                      <span id="ganador">No</span>
+                    )}
+                  </span>
+
+                  <Label className="pt-2" htmlFor="Premio">
+                    Premio
+                  </Label>
+                  <span
+                    id="Premio"
+                    className="text-white border border-gray-800 rounded p-2 font-medium"
+                  >
+                    {user.pre_pen === "" ? (
+                      <span id="Premio">Sin premio</span>
+                    ) : (
+                      <span id="Premio">{user.pre_pen}</span>
+                    )}
+                  </span>
+                  <Button
+                    className="bg-red-500 hover:bg-red-600 text-white font-bold"
+                    type="button"
+                    onClick={handleLogout}
+                  >
+                    Cerrar Sesión
+                  </Button>
                 </div>
               </div>
             </form>

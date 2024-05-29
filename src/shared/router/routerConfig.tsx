@@ -2,8 +2,6 @@ import {
   AdminModule,
   LoginModule,
   NotFoundModule,
-  AdheridosModule,
-  SorteosModule,
   UserModule,
   ExcelModule,
 } from "./pageRouter";
@@ -53,16 +51,7 @@ export const protectedRoutes: IRoute[] = [
     path: ERoutes.ADMIN,
     element: <AdminModule />,
   },
-  {
-    name: "Adheridos",
-    path: ERoutes.ADHERIDOS,
-    element: <AdheridosModule />,
-  },
-  {
-    name: "Sorteos",
-    path: ERoutes.SORTEOS,
-    element: <SorteosModule />,
-  },
+
   {
     name: "Excel",
     path: ERoutes.EXCEL,

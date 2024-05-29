@@ -1,20 +1,29 @@
 import { useStore } from "@/services/zustand/userStore";
+import { useAdminStore } from "@/services/zustand/adminStore";
 import { ReactNode, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
-  const { user } = useStore();
+  const userStore = useStore();
+  const adminStore = useAdminStore();
 
   useEffect(() => {
-    if (user !== null) {
-      if (user.uid === "") {
-        navigate("/");
-      }
-    } else {
+    console.log("admin", adminStore.admin);
+    console.log("user", userStore.user);
+    const user = userStore.user;
+    const admin = adminStore.admin;
+
+    if (user === null && admin === null) {
+      navigate("/");
+    } else if (user && "uid" in user && user.uid === "") {
+      navigate("/");
+    } else if (admin && admin.uid === "") {
       navigate("/");
     }
-  }, [navigate, user]);
+  }, [navigate, userStore, adminStore]);
+
+  console.log(adminStore.admin, userStore.user);
 
   return children;
 };

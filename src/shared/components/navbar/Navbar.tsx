@@ -29,12 +29,12 @@ export const Navbar = () => {
 
       {user && (
         <div className="flex gap-4">
-          <Button
+          {/* <Button
             className="bg-green-700 hover:bg-green-800"
             onClick={() => navigation("/admin/excel")}
           >
             Cargar Excel
-          </Button>
+          </Button> */}
           <Button onClick={handleLogout}>Cerrar sesión</Button>
         </div>
       )}

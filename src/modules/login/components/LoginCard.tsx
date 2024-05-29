@@ -15,6 +15,7 @@ import { LoadingComponent } from "@/shared/components/loading/Loading";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "@/services/zustand/userStore";
+import { useAdminStore } from "@/services/zustand/adminStore";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const LoginCard = () => {
@@ -25,55 +26,58 @@ export const LoginCard = () => {
 
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
+  const setAdmin = useAdminStore((state) => state.setAdmin);
 
   const handleSubmit = async () => {
     if (field1.trim().length === 0 || password.trim().length === 0) {
       toast.error("Debe rellenar los dos campos");
       return;
     }
-
     setLoading(true);
 
+    let data;
+
     try {
-      let data;
       if (loginAs === "admins") {
         data = await signInAsAdmin(field1, password, loginAs);
+        navigate("/admin");
+        if (data) {
+          const adminData = {
+            email: data.email || "",
+            name: data.name || "",
+            tel: data.tel || "",
+            uid: data.uid || "",
+          };
+          setAdmin(adminData);
+        }
       } else {
         data = await signInAsUser(field1, password);
-      }
-
-      if (data) {
-        const userData = {
-          apellido: data.apellido || "",
-          documento: data.documento || "",
-          cliente: data.cliente || "",
-          entidad: data.entidad || "",
-          codigo: data.codigo || "",
-          fec_mae: data.fec_mae || "",
-          cuopag: data.cuopag || "",
-          cuopen: data.cuopen || "",
-          ult_cob: data.ult_cob || "",
-          fupdate: data.fupdate || "",
-          fupd: data.fupd || "",
-          ganador: data.ganador || "",
-          fec_gan: data.fec_gan || "",
-          pre_pen: data.pre_pen || "",
-        };
-        setUser(userData);
-        setLoading(false);
-        loginAs === "admins"
-          ? navigate("/admin")
-          : navigate(`/user/${userData.cliente}`);
-      } else {
-        setLoading(false);
-        setField1("");
-        setPassword("");
-        toast.error("No se encontró ningún usuario con esas credenciales");
+        if (data) {
+          const userData = {
+            apellido: data.apellido || "",
+            documento: data.documento || "",
+            cliente: data.cliente || "",
+            entidad: data.entidad || "",
+            codigo: data.codigo || "",
+            fec_mae: data.fec_mae || "",
+            cuopag: data.cuopag || "",
+            cuopen: data.cuopen || "",
+            ult_cob: data.ult_cob || "",
+            fupdate: data.fupdate || "",
+            fupd: data.fupd || "",
+            ganador: data.ganador || "",
+            fec_gan: data.fec_gan || "",
+            pre_pen: data.pre_pen || "",
+          };
+          setUser(userData);
+          setLoading(false);
+          navigate(`/user/${userData.cliente}`);
+        }
       }
     } catch (error) {
-      console.error("Error durante el inicio de sesión:", error);
+      console.error(error);
+      toast.error("Error al iniciar sesión");
       setLoading(false);
-      toast.error("Error durante el inicio de sesión");
     }
   };
 
@@ -82,7 +86,7 @@ export const LoginCard = () => {
   }
 
   return (
-    <Tabs defaultValue="user" className="w-[400px]">
+    <Tabs defaultValue="user" className="w-[400px] smMax:m-3">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="user" onClick={() => setLoginAs("users")}>
           Usuario
