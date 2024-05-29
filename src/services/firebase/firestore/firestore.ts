@@ -10,11 +10,11 @@ import {
   where,
   updateDoc,
   deleteDoc,
-  writeBatch,
 } from "firebase/firestore";
 import { app } from "../app";
 import { toast } from "react-toastify";
 import * as XLSX from "xlsx";
+import { RowExcel } from "@/shared/types/rowExcel";
 
 export const firestore = getFirestore(app);
 
@@ -166,70 +166,62 @@ export const newWinner = async (client: string, award: string) => {
   }
 };
 
-
-
-
 export const uploadExcelInFirestore = async (file: File) => {
-  try {
+  // Primero creamos una promesa a resolver
+  const promise = new Promise<RowExcel[]>((resolve, reject) => {
     const fileReader = new FileReader();
+    fileReader.readAsArrayBuffer(file);
 
-    const promise = new Promise((resolve, reject) => {
-      fileReader.readAsArrayBuffer(file);
-
-      fileReader.onload = (e) => {
-        if (!e.target) {
-          return reject("Error al leer el archivo");
-        }
-
-        const bufferArray = e.target.result;
-        const wb = XLSX.read(bufferArray, { type: "buffer" });
-        const wsname = wb.SheetNames[0];
-        const ws = wb.Sheets[wsname];
-
-        const data = XLSX.utils.sheet_to_json(ws);
-
-        resolve(data);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-
-    const data = await promise;
-
-    // Ahora una vez que ya tenemos todos los datos en JSON, procedemos a actualizar la colección de usuarios de Firestore.
-    const batch = writeBatch(firestore); // Usamos writeBatch para crear una instancia de batch
-    const usersCollectionRef = collection(firestore, "usuarios");
-
-    for (const record of data) {
-      const docRef = doc(usersCollectionRef, record.id); // Suponiendo que el documento tiene una propiedad 'id' que utilizamos como ID de documento
-
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        // Actualiza el documento existente
-        batch.update(docRef, record);
-      } else {
-        // Crea un nuevo documento si no existe
-        batch.set(docRef, record);
+    fileReader.onload = (e) => {
+      if (!e.target) {
+        return reject("Error al leer el archivo");
       }
-    }
 
-    await batch.commit();
-    toast.success("Datos actualizados en Firestore correctamente");
-  } catch (error) {
-    toast.error("Error al actualizar los datos en Firestore: " + error.message);
-    console.error("Error al procesar los documentos: ", error);
-  }
+      const bufferArray = e.target.result;
+      const wb = XLSX.read(bufferArray, { type: "buffer" });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+
+      const data: RowExcel[] = XLSX.utils.sheet_to_json(ws);
+
+      resolve(data);
+    };
+
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+
+  promise
+    .then(async (data) => {
+      console.log("Datos del archivo cargado:", data);
+      const usersCollectionRef = collection(firestore, "users");
+
+      // Obtener todos los documentos de la colección users
+      const querySnapshot = await getDocs(usersCollectionRef);
+      const deletePromises: Promise<void>[] = [];
+
+      // Eliminar cada documento de la colección
+      querySnapshot.forEach((doc) => {
+        deletePromises.push(deleteDoc(doc.ref));
+      });
+
+      await Promise.all(deletePromises);
+
+      // Cargar nuevos datos en la colección users con el id como la propiedad cliente
+      const uploadPromises: Promise<void>[] = data.map((item) => {
+        const docRef = doc(usersCollectionRef, String(item.cliente));
+        return setDoc(docRef, item);
+        
+      });
+
+      await Promise.all(uploadPromises);
+
+      console.log("Colección 'users' actualizada exitosamente.");
+    })
+    .catch((error) => {
+      console.error("Error al cargar el archivo en Firestore:", error);
+    });
 };
 
-
-
-const getWinner = () =>{
-  // Buscar quien fue el ultimo ganador en la coleccion users
-}
-
-const getAllTel = () =>{
-  // Buscar en la coleccion tel todos los numeros
-}
+ // 445060

@@ -56,11 +56,12 @@ export const signInAsAdmin = async (
 };
 
 export const signInAsUser = async (socioNumber: string, document: string) => {
+  console.log(socioNumber, document);
   try {
     const q = query(
       collection(firestore, "users"),
-      where("cliente", "==", socioNumber),
-      where("documento", "==", document)
+      where("cliente", "==", Number(socioNumber)),
+      where("documento", "==", Number(document))
     );
     const querySnapshot = await getDocs(q);
 
