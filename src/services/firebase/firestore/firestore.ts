@@ -225,3 +225,50 @@ export const uploadExcelInFirestore = async (file: File) => {
 };
 
  // 445060
+
+export const getPhones = async () => {
+  const collectionRef = collection(firestore, "tel");
+
+  try {
+    const querySnapshot = await getDocs(collectionRef);
+
+    if (querySnapshot.empty) {
+      console.log("No matching documents.");
+      return [];
+    }
+
+    const documents = querySnapshot.docs.map((doc) => doc.data());
+
+    console.log("Documentos encontrados: ", documents);
+    return documents;
+  } catch (error) {
+    console.error("Error getting documents: ", error);
+    throw new Error("Error fetching documents");
+  }
+};
+
+
+// funcion para obtener utlimo ganador, y que premio gano, de la coleccion users
+export const getLastWinner = async () => {
+  const collectionRef = collection(firestore, "users");
+  //solo traer los documentos que tengan un fec_gan distinto de null
+  const q = query(collectionRef, where("fec_gan", "!=", "undefined"), orderBy("fec_gan", "desc"), limit(1));
+  //filtrar por fecha de ganador mas reciente
+  try {
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.log("No matching documents.");
+      return [];
+    }
+
+    const documents = querySnapshot.docs.map((doc) => doc.data());
+
+    console.log("Documentos encontrados: ", documents);
+    return documents;
+  } catch (error) {
+    console.error("Error getting documents: ", error);
+    throw new Error("Error fetching documents");
+  }
+
+};

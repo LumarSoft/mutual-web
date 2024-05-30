@@ -8,9 +8,30 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { toast, ToastContainer } from "react-toastify";
+import { getLastWinner, getPhones } from "@/services/firebase/firestore/firestore";
+import { useState } from "react";
 
 export const DialogWhatsapp = () => {
-  const handleSend = async () => {};
+  const handleSend = async () => {
+    try {
+      const phones = await getPhones();
+      const ganador = await getLastWinner();
+  
+      fetch ("http://localhost:3008/enviar-mensajes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({phones, ganador}),
+      })
+      toast.success("Mensaje enviado");
+    } catch (error) {
+      console.error("Error al enviar mensajes: ", error);
+      toast.error("Hubo un error al enviar los mensajes");
+    }
+  };
+  
 
   return (
     <Dialog>
@@ -19,10 +40,13 @@ export const DialogWhatsapp = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="w-full text-center">QR para conectar al bot de <span className="text-green-500">Whatsapp</span></DialogTitle>
+          <DialogTitle className="w-full text-center">
+            QR para conectar al bot de{" "}
+            <span className="text-green-500">Whatsapp</span>
+          </DialogTitle>
           <DialogDescription className="p-1">
-            <span className="text-red-500">RECORDATORIO:</span> El QR se actualiza cada 1 minuto. Recargar la pagina
-            de ser necesario.
+            <span className="text-red-500">RECORDATORIO:</span> El QR se
+            actualiza cada 1 minuto. Recargar la pagina de ser necesario.
           </DialogDescription>
           <DialogDescription className="flex justify-center items-center p-1">
             <img src="http://localhost:3008/" className="p-4" />
