@@ -224,6 +224,8 @@ export const uploadExcelInFirestore = async (file: File) => {
           ult_cob: String(item.ult_cob),
           fupdate: String(item.fupdate),
           fupd: String(item.fupd),
+          fec_gan: String(item.fec_gan),
+          pre_pen: String(item.pre_pen),
         };
         return newItem;
       });
