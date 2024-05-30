@@ -9,8 +9,6 @@ export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const adminStore = useAdminStore();
 
   useEffect(() => {
-    console.log("admin", adminStore.admin);
-    console.log("user", userStore.user);
     const user = userStore.user;
     const admin = adminStore.admin;
 

@@ -9,20 +9,10 @@ enum ERoutes {
   LOGIN = "/",
   NOT_FOUND = "/*",
   ADMIN = "/admin",
-  ADHERIDOS = "/admin/adheridos",
-  SORTEOS = "/admin/sorteos",
-  EXCEL = "/admin/excel",
   USER = "/user/:id",
 }
 
-type TActualRoutes =
-  | "Login"
-  | "NotFound"
-  | "Admin"
-  | "User"
-  | "Adheridos"
-  | "Sorteos"
-  | "Excel";
+type TActualRoutes = "Login" | "NotFound" | "Admin" | "User";
 
 interface IRoute {
   name: TActualRoutes;

@@ -9,11 +9,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { uploadExcelInFirestore } from "@/services/firebase/firestore/firestore";
+import { LoadingComponent } from "@/shared/components/loading/Loading";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
 export const LoginExcelCard = () => {
   const [file, setFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const changeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -22,13 +24,21 @@ export const LoginExcelCard = () => {
     }
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!file) {
       return toast.error("Por favor seleccione un archivo");
     }
 
-    uploadExcelInFirestore(file);
+    setLoading(true);
+
+    const isFinish = await uploadExcelInFirestore(file);
+
+    if (isFinish) {
+      setLoading(false);
+    }
   };
+
+  if (loading) return <LoadingComponent />;
 
   return (
     <Card>
@@ -40,7 +50,7 @@ export const LoginExcelCard = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Input type="file" onChange={changeFile} />
+        <Input type="file" onChange={changeFile} accept=".xlsx, .xls" />
       </CardContent>
       <CardFooter>
         <Button className="w-full" onClick={handleUpload}>

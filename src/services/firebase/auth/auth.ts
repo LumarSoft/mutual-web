@@ -17,17 +17,6 @@ import {
 
 const auth = getAuth(app);
 
-interface User {
-  name: string;
-  DNI: string;
-  email: string;
-  tel: string;
-  bono: string;
-  instalmentsQty: number;
-  dateSubscription: string;
-  DateLastPaid: string;
-}
-
 export const signInAsAdmin = async (
   email: string,
   password: string,
@@ -70,41 +59,6 @@ export const signInAsUser = async (socioNumber: string, document: string) => {
     } else {
       console.log("No such document!");
     }
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const singUp = async (collectionName: string, user: User) => {
-  try {
-    const {
-      name,
-      DNI,
-      email,
-      tel,
-      bono,
-      instalmentsQty,
-      dateSubscription,
-      DateLastPaid,
-    } = user;
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      DNI
-    );
-    const newUser = userCredential.user;
-
-    await setDoc(doc(firestore, collectionName, newUser.uid), {
-      name,
-      DNI,
-      email,
-      tel,
-      bono,
-      date_subscription: dateSubscription,
-      instalments_Qty: instalmentsQty,
-      last_paid: DateLastPaid,
-      uid: newUser.uid,
-    });
   } catch (error) {
     console.error(error);
   }

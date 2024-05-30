@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { useStore } from "@/services/zustand/userStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import { useAdminStore } from "@/services/zustand/adminStore";
 
 export const Navbar = () => {
-  const { user, logout } = useStore();
   const navigation = useNavigate();
   const location = useLocation();
+  const { admin, logout } = useAdminStore();
 
   const handleLogout = () => {
     logout();
@@ -27,14 +27,8 @@ export const Navbar = () => {
         />
       ) : null}
 
-      {user && (
+      {admin && (
         <div className="flex gap-4">
-          {/* <Button
-            className="bg-green-700 hover:bg-green-800"
-            onClick={() => navigation("/admin/excel")}
-          >
-            Cargar Excel
-          </Button> */}
           <Button onClick={handleLogout}>Cerrar sesión</Button>
         </div>
       )}

@@ -8,9 +8,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { getLastWinner, getPhones } from "@/services/firebase/firestore/firestore";
-import { useState } from "react";
 
 export const DialogWhatsapp = () => {
   const handleSend = async () => {
