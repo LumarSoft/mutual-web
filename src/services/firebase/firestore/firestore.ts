@@ -231,7 +231,7 @@ export const uploadExcelInFirestore = async (file: File) => {
       });
 
       // Cargar nuevos datos en la colección users con el id como la propiedad cliente
-      const uploadPromises: Promise<void>[] = data.map((item) => {
+      const uploadPromises: Promise<void>[] = dataString.map((item) => {
         const docRef = doc(usersCollectionRef, String(item.cliente));
         return setDoc(docRef, item);
         
