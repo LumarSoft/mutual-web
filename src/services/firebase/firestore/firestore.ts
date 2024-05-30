@@ -231,9 +231,10 @@ export const uploadExcelInFirestore = async (file: File) => {
       });
 
       // Cargar nuevos datos en la colección users con el id como la propiedad cliente
-      const uploadPromises: Promise<void>[] = dataString.map((item) => {
+      const uploadPromises: Promise<void>[] = data.map((item) => {
         const docRef = doc(usersCollectionRef, String(item.cliente));
         return setDoc(docRef, item);
+        
       });
 
       await Promise.all(uploadPromises);
@@ -243,4 +244,53 @@ export const uploadExcelInFirestore = async (file: File) => {
     .catch((error) => {
       console.error("Error al cargar el archivo en Firestore:", error);
     });
+};
+
+ // 445060
+
+export const getPhones = async () => {
+  const collectionRef = collection(firestore, "tel");
+
+  try {
+    const querySnapshot = await getDocs(collectionRef);
+
+    if (querySnapshot.empty) {
+      console.log("No matching documents.");
+      return [];
+    }
+
+    const documents = querySnapshot.docs.map((doc) => doc.data());
+
+    console.log("Documentos encontrados: ", documents);
+    return documents;
+  } catch (error) {
+    console.error("Error getting documents: ", error);
+    throw new Error("Error fetching documents");
+  }
+};
+
+
+// funcion para obtener utlimo ganador, y que premio gano, de la coleccion users
+export const getLastWinner = async () => {
+  const collectionRef = collection(firestore, "users");
+  //solo traer los documentos que tengan un fec_gan distinto de null
+  const q = query(collectionRef, where("fec_gan", "!=", "undefined"), orderBy("fec_gan", "desc"), limit(1));
+  //filtrar por fecha de ganador mas reciente
+  try {
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.log("No matching documents.");
+      return [];
+    }
+
+    const documents = querySnapshot.docs.map((doc) => doc.data());
+
+    console.log("Documentos encontrados: ", documents);
+    return documents;
+  } catch (error) {
+    console.error("Error getting documents: ", error);
+    throw new Error("Error fetching documents");
+  }
+
 };
