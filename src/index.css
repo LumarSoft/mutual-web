@@ -62,3 +62,17 @@
 html {
    overflow-x: hidden;
 }
+
+@layer utilities {
+  /* Para Webkit (Chrome, Safari, Edge) */
+  .no-spinner::-webkit-outer-spin-button,
+  .no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Para Firefox */
+  .no-spinner {
+    -moz-appearance: textfield;
+  }
+}

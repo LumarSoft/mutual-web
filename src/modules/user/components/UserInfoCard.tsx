@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { useStore } from "@/services/zustand/userStore";
 import {
   Card,
@@ -10,25 +10,66 @@ import {
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { getLastWinner } from "@/services/firebase/firestore/firestore";
+import {
+  getLastWinner,
+  updatePhoneNumber,
+  getPhoneNumber,
+} from "@/services/firebase/firestore/firestore";
 import { DocumentData } from "firebase/firestore";
+import { Input } from "@/components/ui/input";
 
 export const UserInfoCard = () => {
   const { user, logout } = useStore();
   const navigate = useNavigate();
   const [lastWinner, setLastWinner] = useState<DocumentData | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [isPhoneNumberSaved, setIsPhoneNumberSaved] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchLastWinner = async () => {
       const winnerData = await getLastWinner();
       setLastWinner(winnerData.length > 0 ? winnerData[0] : null);
     };
+
+    const fetchPhoneNumber = async () => {
+      if (user) {
+        const phoneData = await getPhoneNumber(user.cliente);
+        if (phoneData) {
+          setPhoneNumber(phoneData.tel);
+          setIsPhoneNumberSaved(true);
+        }
+      }
+    };
+
     fetchLastWinner();
-  }, []);
+    fetchPhoneNumber();
+  }, [user]);
 
   const handleLogout = () => {
     logout();
     navigate("/");
+  };
+
+  const handleUpdatePhoneNumber = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+
+    setIsLoading(true);
+    try {
+      await updatePhoneNumber({
+        tel: phoneNumber,
+        cliente: user.cliente,
+        apellido: user.apellido,
+      });
+      setMessage("Número de teléfono actualizado con éxito.");
+      setIsPhoneNumberSaved(true);
+    } catch (error) {
+      setMessage("Error al actualizar el número de teléfono.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   function excelDateToJSDate(excelDate: string) {
@@ -76,7 +117,7 @@ export const UserInfoCard = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleUpdatePhoneNumber}>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-2">
                 <Label className="pt-2" htmlFor="apellido">
@@ -136,7 +177,7 @@ export const UserInfoCard = () => {
                   id="fupdate"
                   className="text-white border border-gray-800 rounded p-2 font-medium"
                 >
-                  {excelDateToJSDate(user.fupdate).toLocaleDateString()}
+                  {excelDateToJSDate(user.fupdate)?.toLocaleDateString()}
                 </span>
 
                 <Label className="pt-2" htmlFor="ganador">
@@ -158,6 +199,31 @@ export const UserInfoCard = () => {
                 >
                   {premioTexto}
                 </span>
+
+                <Label className="pt-3" htmlFor="tel">
+                  Teléfono
+                </Label>
+                <Input
+                  type="number"
+                  className="no-spinner"
+                  value={phoneNumber}
+                  disabled={isPhoneNumberSaved}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+
+                {!isPhoneNumberSaved && (
+                  <Button
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold"
+                    type="submit"
+                  >
+                    {isLoading
+                      ? "Actualizando..."
+                      : "Actualizar número de teléfono"}
+                  </Button>
+                )}
+
+                {message && <span className="text-center pt-2">{message}</span>}
+
                 <Button
                   className="bg-red-500 hover:bg-red-600 text-white font-bold"
                   type="button"

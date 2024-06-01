@@ -9,6 +9,8 @@ import {
   limit,
   where,
   deleteDoc,
+  addDoc,
+  getDoc,
 } from "firebase/firestore";
 import { app } from "../app";
 import * as XLSX from "xlsx";
@@ -122,7 +124,6 @@ export const getLastWinner = async () => {
     limit(1)
   );
   try {
-    
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
@@ -136,5 +137,45 @@ export const getLastWinner = async () => {
   } catch (error) {
     console.error("Error getting documents: ", error);
     throw new Error("Error fetching documents");
+  }
+};
+
+// Función para actualizar el número de teléfono
+export const updatePhoneNumber = async ({
+  tel,
+  cliente,
+  apellido,
+}: {
+  tel: string;
+  cliente: string;
+  apellido: string;
+}) => {
+  const ref = collection(firestore, "tel");
+  const q = query(
+    ref,
+    where("cliente", "==", cliente),
+    where("apellido", "==", apellido)
+  );
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.empty) {
+    await addDoc(ref, { tel, cliente, apellido });
+  } else {
+    querySnapshot.forEach(async (doc) => {
+      await setDoc(doc.ref, { tel }, { merge: true });
+    });
+  }
+};
+
+// Función para obtener el número de teléfono por cliente
+export const getPhoneNumber = async (cliente: string) => {
+  const ref = collection(firestore, "tel");
+  const q = query(ref, where("cliente", "==", cliente));
+  const querySnapshot = await getDocs(q);
+
+  if (!querySnapshot.empty) {
+    return querySnapshot.docs[0].data();
+  } else {
+    return null;
   }
 };
