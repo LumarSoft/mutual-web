@@ -150,31 +150,16 @@ export const updatePhoneNumber = async ({
   cliente: string;
   apellido: string;
 }) => {
-  const ref = collection(firestore, "tel");
-  const q = query(
-    ref,
-    where("cliente", "==", cliente),
-    where("apellido", "==", apellido)
-  );
-  const querySnapshot = await getDocs(q);
-
-  if (querySnapshot.empty) {
-    await addDoc(ref, { tel, cliente, apellido });
-  } else {
-    querySnapshot.forEach(async (doc) => {
-      await setDoc(doc.ref, { tel }, { merge: true });
-    });
-  }
+  const docRef = doc(firestore, "tel", cliente); // Usamos el número de cliente como documentId
+  await setDoc(docRef, { tel, cliente, apellido }, { merge: true });
 };
-
 // Función para obtener el número de teléfono por cliente
 export const getPhoneNumber = async (cliente: string) => {
-  const ref = collection(firestore, "tel");
-  const q = query(ref, where("cliente", "==", cliente));
-  const querySnapshot = await getDocs(q);
+  const docRef = doc(firestore, "tel", cliente);
+  const docSnapshot = await getDoc(docRef);
 
-  if (!querySnapshot.empty) {
-    return querySnapshot.docs[0].data();
+  if (docSnapshot.exists()) {
+    return docSnapshot.data();
   } else {
     return null;
   }

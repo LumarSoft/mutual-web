@@ -17,6 +17,7 @@ import {
 } from "@/services/firebase/firestore/firestore";
 import { DocumentData } from "firebase/firestore";
 import { Input } from "@/components/ui/input";
+import { toast } from "react-toastify";
 
 export const UserInfoCard = () => {
   const { user, logout } = useStore();
@@ -25,7 +26,6 @@ export const UserInfoCard = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [isPhoneNumberSaved, setIsPhoneNumberSaved] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchLastWinner = async () => {
@@ -56,6 +56,11 @@ export const UserInfoCard = () => {
     e.preventDefault();
     if (!user) return;
 
+    if (!phoneNumber || phoneNumber.length < 8) {
+      toast.error("El número de teléfono debe tener al menos 8 caracteres.");
+      return;
+    }
+
     setIsLoading(true);
     try {
       await updatePhoneNumber({
@@ -63,10 +68,10 @@ export const UserInfoCard = () => {
         cliente: user.cliente,
         apellido: user.apellido,
       });
-      setMessage("Número de teléfono actualizado con éxito.");
+      toast.success("Número de teléfono actualizado con éxito.");
       setIsPhoneNumberSaved(true);
     } catch (error) {
-      setMessage("Error al actualizar el número de teléfono.");
+      toast.error("Error al actualizar el número de teléfono.");
     } finally {
       setIsLoading(false);
     }
@@ -221,8 +226,6 @@ export const UserInfoCard = () => {
                       : "Actualizar número de teléfono"}
                   </Button>
                 )}
-
-                {message && <span className="text-center pt-2">{message}</span>}
 
                 <Button
                   className="bg-red-500 hover:bg-red-600 text-white font-bold"
