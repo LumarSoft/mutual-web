@@ -210,7 +210,7 @@ export const UserInfoCard = () => {
                 </Label>
                 <Input
                   type="number"
-                  className="no-spinner"
+                  className="no-spinner border border-green-600"
                   value={phoneNumber}
                   disabled={isPhoneNumberSaved}
                   onChange={(e) => setPhoneNumber(e.target.value)}
