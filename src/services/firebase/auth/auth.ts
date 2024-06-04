@@ -37,29 +37,36 @@ export const signInAsAdmin = async (
     if (docSnap.exists()) {
       return docSnap.data();
     } else {
-      console.log("No such document!");
+      throw new Error("No such document");
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
+    if (
+      error.code === "auth/invalid-credential" ||
+      error.code === "auth/wrong-password"
+    ) {
+      throw new Error("Credenciales inválidas");
+    }
+    throw new Error(error.message || "Error desconocido al iniciar sesión");
   }
 };
 
 export const signInAsUser = async (socioNumber: string, document: string) => {
-  console.log(socioNumber, document);
   try {
     const q = query(
       collection(firestore, "users"),
-      where("cliente", "==", (socioNumber)),
-      where("documento", "==", (document))
+      where("cliente", "==", socioNumber),
+      where("documento", "==", document)
     );
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
       return querySnapshot.docs[0].data();
     } else {
-      console.log("No such document!");
+      throw new Error("No such document");
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
+    throw new Error(error.message || "Error desconocido al iniciar sesión");
   }
 };

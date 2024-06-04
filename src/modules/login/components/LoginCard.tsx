@@ -33,36 +33,30 @@ export const LoginCard = () => {
       toast.error("Debe rellenar los dos campos");
       return;
     }
+
     setLoading(true);
 
-    console.log(
-      "loginAs: ",
-      loginAs,
-      "field1: ",
-      field1,
-      "password: ",
-      password
-    );
-
-    let data;
-
     try {
+      let data;
+
       if (loginAs === "admins") {
         data = await signInAsAdmin(field1, password, loginAs);
-        navigate("/admin");
+
         if (data) {
-          const adminData = {
+          setAdmin({
             email: data.email || "",
             name: data.name || "",
             tel: data.tel || "",
             uid: data.uid || "",
-          };
-          setAdmin(adminData);
+          });
+          toast.success("Inicio de sesión como administrador exitoso");
+          navigate("/admin");
         }
       } else {
         data = await signInAsUser(field1, password);
+
         if (data) {
-          const userData = {
+          setUser({
             apellido: data.apellido || "",
             documento: data.documento || "",
             cliente: data.cliente || "",
@@ -77,15 +71,19 @@ export const LoginCard = () => {
             ganador: data.ganador || "",
             fec_gan: data.fec_gan || "",
             pre_pen: data.pre_pen || "",
-          };
-          setUser(userData);
-          setLoading(false);
-          navigate(`/user/${userData.cliente}`);
+          });
+          toast.success("Inicio de sesión como usuario exitoso");
+          navigate(`/user/${data.cliente}`);
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      toast.error("Error al iniciar sesión");
+      if (error.message === "Credenciales inválidas") {
+        toast.error("Usuario no encontrado o contraseña incorrecta");
+      } else {
+        toast.error("Error al iniciar sesión");
+      }
+    } finally {
       setLoading(false);
     }
   };
@@ -95,16 +93,16 @@ export const LoginCard = () => {
   }
 
   return (
-    <Tabs defaultValue="user" className="w-[400px] smMax:m-3">
+    <Tabs
+      value={loginAs}
+      className="w-[400px] smMax:m-3"
+      onValueChange={setLoginAs}
+    >
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="user" onClick={() => setLoginAs("users")}>
-          Usuario
-        </TabsTrigger>
-        <TabsTrigger value="admin" onClick={() => setLoginAs("admins")}>
-          Administrador
-        </TabsTrigger>
+        <TabsTrigger value="users">Usuario</TabsTrigger>
+        <TabsTrigger value="admins">Administrador</TabsTrigger>
       </TabsList>
-      <TabsContent value="user">
+      <TabsContent value="users">
         <Card>
           <CardHeader>
             <CardTitle>Usuario</CardTitle>
@@ -141,7 +139,7 @@ export const LoginCard = () => {
           </CardFooter>
         </Card>
       </TabsContent>
-      <TabsContent value="admin">
+      <TabsContent value="admins">
         <Card>
           <CardHeader>
             <CardTitle>Administrador</CardTitle>
@@ -153,7 +151,7 @@ export const LoginCard = () => {
               <Input
                 id="emailAdmin"
                 type="text"
-                placeholder="bodinidev@gmail.com"
+                placeholder="admin@example.com"
                 value={field1}
                 onChange={(e) => setField1(e.target.value)}
               />
