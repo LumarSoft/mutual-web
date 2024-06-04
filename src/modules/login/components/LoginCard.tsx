@@ -35,6 +35,15 @@ export const LoginCard = () => {
     }
     setLoading(true);
 
+    console.log(
+      "loginAs: ",
+      loginAs,
+      "field1: ",
+      field1,
+      "password: ",
+      password
+    );
+
     let data;
 
     try {
