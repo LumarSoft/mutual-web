@@ -176,7 +176,7 @@ export const UserInfoCard = () => {
                 </span>
 
                 <Label className="pt-2" htmlFor="fupdate">
-                  Última Actualización del Sistema
+                  Última Actualización del Sistema (Se actualiza todos los Lunes)
                 </Label>
                 <span
                   id="fupdate"
