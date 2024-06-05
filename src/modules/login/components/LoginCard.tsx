@@ -113,7 +113,7 @@ export const LoginCard = () => {
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="space-y-1">
-              <Label htmlFor="emailUser">Número de socio</Label>
+              <Label htmlFor="emailUser">Número de bono</Label>
               <Input
                 id="emailUser"
                 placeholder="123456"

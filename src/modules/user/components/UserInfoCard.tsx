@@ -136,7 +136,7 @@ export const UserInfoCard = () => {
                 </span>
 
                 <Label className="pt-2" htmlFor="cliente">
-                  Cliente
+                  Número de bono
                 </Label>
                 <span
                   id="cliente"
