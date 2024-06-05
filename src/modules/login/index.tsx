@@ -9,9 +9,9 @@ const LoginModule = () => {
           <div className="flex flex-col">
             <p className="text-center">
               Consultas:{" "}
-              <a 
-                href="https://wa.me/5491131489197" 
-                target="_blank" 
+              <a
+                href="https://wa.me/5491131489197"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-500 underline"
               >
@@ -34,6 +34,7 @@ const LoginModule = () => {
             <a
               className="text-lg font-semibold"
               href="https://www.instagram.com/centroretiradosgn/?hl=es"
+              target="_blank"
             >
               @CentroretiradosGN
             </a>
