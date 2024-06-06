@@ -206,7 +206,7 @@ export const UserInfoCard = () => {
                 </span>
 
                 <Label className="pt-3" htmlFor="tel">
-                  Teléfono para recibir resultados del sorteo. Ej: 3415690470
+                  Teléfono para recibir resultados del sorteo vía WhatsApp. Ej: 3415690470
                 </Label>
                 <Input
                   type="number"
