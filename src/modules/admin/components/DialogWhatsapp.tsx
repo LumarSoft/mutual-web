@@ -35,7 +35,7 @@ export const DialogWhatsapp = () => {
         formData.append("file", file);
       }
 
-      const response = await fetch("https://xn--campaacentrosubofretiradosgn-1xc.store:3008/enviar-mensajes", {
+      const response = await fetch("http://xn--campaacentrosubofretiradosgn-1xc.store:3008/enviar-mensajes", {
         method: "POST",
         body: formData,
       });
@@ -70,7 +70,7 @@ export const DialogWhatsapp = () => {
             actualiza cada 1 minuto. Recargar la pagina de ser necesario.
           </DialogDescription>
           <DialogDescription className="flex justify-center items-center p-1">
-            <img src="https://xn--campaacentrosubofretiradosgn-1xc.store:3008" className="p-4" />
+            <img src="http://xn--campaacentrosubofretiradosgn-1xc.store:3008" className="p-4" />
           </DialogDescription>
           <Label>
             Ingrese el mensaje a enviar{" "}
