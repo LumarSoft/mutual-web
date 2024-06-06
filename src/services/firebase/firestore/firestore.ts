@@ -9,7 +9,6 @@ import {
   limit,
   where,
   deleteDoc,
-  addDoc,
   getDoc,
 } from "firebase/firestore";
 import { app } from "../app";
