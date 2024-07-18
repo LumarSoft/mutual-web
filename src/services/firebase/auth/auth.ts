@@ -53,7 +53,7 @@ export const signInAsUser = async (socioNumber: string, document: string) => {
   try {
     const q = query(
       collection(firestore, "users"),
-      where("cliente", "==", socioNumber),
+      where("codigo", "==", socioNumber),
       where("documento", "==", document)
     );
     const querySnapshot = await getDocs(q);
