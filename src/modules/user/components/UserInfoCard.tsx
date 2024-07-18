@@ -34,6 +34,7 @@ export const UserInfoCard = () => {
     };
 
     const fetchPhoneNumber = async () => {
+
       if (user) {
         const phoneData = await getPhoneNumber(user.cliente);
         if (phoneData) {
@@ -142,7 +143,7 @@ export const UserInfoCard = () => {
                   id="cliente"
                   className="text-white border border-gray-800 rounded p-2 font-medium"
                 >
-                  {user.cliente}
+                  {user.codigo}
                 </span>
 
                 <Label className="pt-2" htmlFor="documento">

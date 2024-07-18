@@ -35,10 +35,17 @@ export const LoginExcelCard = () => {
 
     if (isFinish) {
       setLoading(false);
+      toast.success("Archivo subido correctamente");
     }
   };
 
-  if (loading) return <LoadingComponent />;
+  if (loading)
+    return (
+      <div className="flex gap-6">
+        <LoadingComponent />
+        <p>Cargando datos, aguarde un momento</p>
+      </div>
+    );
 
   return (
     <Card>
