@@ -1,17 +1,18 @@
 import {
+  AdminModule,
+  LoginModule,
   NotFoundModule,
-  RegisterModule,
-  UnderConstructionModule,
+  UserModule,
 } from "./pageRouter";
 
 enum ERoutes {
-  // LOGIN = "/",
-  REGISTER = "/register",
+  LOGIN = "/",
   NOT_FOUND = "/*",
-  UNDER_CONSTRUCTION = "/",
+  ADMIN = "/admin",
+  USER = "/user/:id",
 }
 
-type TActualRoutes = "Login" | "Register" | "NotFound" | "UnderConstruction";
+type TActualRoutes = "Login" | "NotFound" | "Admin" | "User";
 
 interface IRoute {
   name: TActualRoutes;
@@ -21,25 +22,29 @@ interface IRoute {
 }
 
 export const routes: IRoute[] = [
-  // {
-  //   name: "Login",
-  //   path: ERoutes.LOGIN,
-  //   element: <LoginModule />,
-  // },
   {
-    name: "Register",
-    path: ERoutes.REGISTER,
-    element: <RegisterModule />,
+    name: "Login",
+    path: ERoutes.LOGIN,
+    element: <LoginModule />,
   },
   {
     name: "NotFound",
     path: ERoutes.NOT_FOUND,
     element: <NotFoundModule />,
   },
+];
+
+export const protectedRoutes: IRoute[] = [
   {
-    name: "UnderConstruction",
-    path: ERoutes.UNDER_CONSTRUCTION,
-    element: <UnderConstructionModule />,
+    name: "Admin",
+    path: ERoutes.ADMIN,
+    element: <AdminModule />,
+  },
+
+  {
+    name: "User",
+    path: ERoutes.USER,
+    element: <UserModule />,
   },
 ];
 
