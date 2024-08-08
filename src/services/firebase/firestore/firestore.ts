@@ -132,6 +132,7 @@ export const getLastWinner = async () => {
 
     const documents = querySnapshot.docs.map((doc) => doc.data());
 
+
     return documents;
   } catch (error) {
     console.error("Error getting documents: ", error);
@@ -155,6 +156,18 @@ export const updatePhoneNumber = async ({
 // Función para obtener el número de teléfono por cliente
 export const getPhoneNumber = async (cliente: string) => {
   const docRef = doc(firestore, "tel", cliente);
+  const docSnapshot = await getDoc(docRef);
+
+  if (docSnapshot.exists()) {
+    return docSnapshot.data();
+  } else {
+    return null;
+  }
+};
+
+//Funcion para saber si la persona que inicio sesion es ganadora o no
+export const isWinner = async (cliente: string) => {
+  const docRef = doc(firestore, "users", cliente);
   const docSnapshot = await getDoc(docRef);
 
   if (docSnapshot.exists()) {

@@ -22,19 +22,14 @@ import { toast } from "react-toastify";
 export const UserInfoCard = () => {
   const { user, logout } = useStore();
   const navigate = useNavigate();
-  const [lastWinner, setLastWinner] = useState<DocumentData | null>(null);
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [isPhoneNumberSaved, setIsPhoneNumberSaved] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchLastWinner = async () => {
-      const winnerData = await getLastWinner();
-      setLastWinner(winnerData.length > 0 ? winnerData[0] : null);
-    };
+    console.log("user", user);
 
     const fetchPhoneNumber = async () => {
-
       if (user) {
         const phoneData = await getPhoneNumber(user.cliente);
         if (phoneData) {
@@ -44,7 +39,6 @@ export const UserInfoCard = () => {
       }
     };
 
-    fetchLastWinner();
     fetchPhoneNumber();
   }, [user]);
 
@@ -104,9 +98,9 @@ export const UserInfoCard = () => {
     );
   }
 
-  const isLastWinner = lastWinner && lastWinner.documento === user.documento;
-  const ganadorTexto = isLastWinner ? "Si!" : "No";
-  const premioTexto = isLastWinner
+  const isWinner = user.pre_pen !== "undefined";
+  const ganadorTexto = isWinner ? "Si!" : "No";
+  const premioTexto = isWinner
     ? user.pre_pen === "undefined"
       ? "Sin premio"
       : user.pre_pen
@@ -177,7 +171,7 @@ export const UserInfoCard = () => {
                 </span>
 
                 <Label className="pt-2" htmlFor="fupdate">
-                  Última Actualización del Sistema (Se actualiza todos los Lunes)
+                  Última Actualización del Sistema.
                 </Label>
                 <span
                   id="fupdate"
@@ -207,7 +201,8 @@ export const UserInfoCard = () => {
                 </span>
 
                 <Label className="pt-3" htmlFor="tel">
-                  Teléfono para recibir resultados del sorteo vía WhatsApp. Ej: 3415690470
+                  Teléfono para recibir resultados del sorteo vía WhatsApp. Ej:
+                  3415690470
                 </Label>
                 <Input
                   type="number"
