@@ -11,11 +11,9 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import {
-  getLastWinner,
   updatePhoneNumber,
   getPhoneNumber,
 } from "@/services/firebase/firestore/firestore";
-import { DocumentData } from "firebase/firestore";
 import { Input } from "@/components/ui/input";
 import { toast } from "react-toastify";
 

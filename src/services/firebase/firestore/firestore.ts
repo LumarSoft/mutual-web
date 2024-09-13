@@ -47,6 +47,7 @@ export const uploadExcelInFirestore = async (file: File): Promise<boolean> => {
     console.log("Datos del archivo cargado:", data);
     const usersCollectionRef = collection(firestore, "users");
 
+    // Eliminar todos los documentos existentes en la colección
     const querySnapshot = await getDocs(usersCollectionRef);
     const deletePromises: Promise<void>[] = [];
 
@@ -56,6 +57,7 @@ export const uploadExcelInFirestore = async (file: File): Promise<boolean> => {
 
     await Promise.all(deletePromises);
 
+    // Mapear y subir los datos con un ID único por cada fila
     const dataString = data.map((item) => {
       const newItem: RowExcel = {
         documento: String(item.documento),
@@ -76,9 +78,10 @@ export const uploadExcelInFirestore = async (file: File): Promise<boolean> => {
       return newItem;
     });
 
+    // Subir cada registro con un ID único
     const uploadPromises: Promise<void>[] = dataString.map((item) => {
-      const docRef = doc(usersCollectionRef, String(item.cliente));
-      return setDoc(docRef, item);
+      const uniqueDocRef = doc(usersCollectionRef);  // Genera un ID único automáticamente
+      return setDoc(uniqueDocRef, item);
     });
 
     await Promise.all(uploadPromises);
@@ -89,6 +92,7 @@ export const uploadExcelInFirestore = async (file: File): Promise<boolean> => {
     return false;
   }
 };
+
 
 //Funcion para traer los telefonos de la coleccion tel
 export const getPhones = async () => {
