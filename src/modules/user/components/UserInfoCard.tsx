@@ -175,7 +175,10 @@ export const UserInfoCard = () => {
                   id="fupdate"
                   className="text-white border border-gray-800 rounded p-2 font-medium"
                 >
-                  {excelDateToJSDate(user.fupdate)?.toLocaleDateString()}
+                  {excelDateToJSDate(user.fupdate)?.toLocaleDateString("es-AR", {
+                    month: "2-digit",
+                    year: "numeric",
+                  })}
                 </span>
 
                 <Label className="pt-2" htmlFor="ganador">
