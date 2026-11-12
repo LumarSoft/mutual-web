@@ -11,7 +11,9 @@ import {
   query,
   where,
   getDocs,
+  DocumentData,
 } from "firebase/firestore";
+import { Premio } from "@/shared/types/users";
 
 const auth = getAuth(app);
 
@@ -58,11 +60,20 @@ export const signInAsUser = async (socioNumber: string, document: string) => {
     );
     const querySnapshot = await getDocs(q);
 
-    if (!querySnapshot.empty) {
-      return querySnapshot.docs[0].data();
-    } else {
+    if (querySnapshot.empty) {
       throw new Error("No such document");
     }
+
+    // A bono that won more than once has one row per win in the Excel,
+    // so keep the win data of every matching row, not only the first one.
+    const rows = querySnapshot.docs.map((d) => d.data());
+    const premios: Premio[] = rows.map((row) => ({
+      fec_gan: String(row.fec_gan),
+      pre_pen: String(row.pre_pen),
+    }));
+
+    const user: DocumentData = { ...rows[0], premios };
+    return user;
   } catch (error: any) {
     console.error(error);
     throw new Error(error.message || "Error desconocido al iniciar sesión");

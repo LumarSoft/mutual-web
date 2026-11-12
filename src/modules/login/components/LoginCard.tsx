@@ -71,6 +71,7 @@ export const LoginCard = () => {
             ganador: data.ganador || "",
             fec_gan: data.fec_gan || "",
             pre_pen: data.pre_pen || "",
+            premios: data.premios || [],
           });
           toast.success("Inicio de sesión como usuario exitoso");
           navigate(`/user/${data.cliente}`);
