@@ -76,19 +76,6 @@ export const UserInfoCard = () => {
     return date;
   }
 
-  // Excel stores dates as serial numbers; computed in UTC so the day never shifts
-  function formatExcelDate(excelDate: string) {
-    const serial = Number(excelDate);
-    if (!Number.isFinite(serial)) return excelDate;
-    const date = new Date(Date.UTC(1899, 11, 30) + serial * 86400000);
-    return date.toLocaleDateString("es-AR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      timeZone: "UTC",
-    });
-  }
-
   if (!user) {
     return (
       <main className="flex justify-center items-center mt-10 mx-4">
@@ -123,9 +110,10 @@ export const UserInfoCard = () => {
   const premiosGanados = unique(
     premiosRows.map((p) => p.pre_pen).filter(hasValue)
   );
+  // Win dates are only used to count wins, they are not shown to the user
   const fechasGanadas = unique(
     premiosRows.map((p) => p.fec_gan).filter(hasValue)
-  ).sort((a, b) => Number(a) - Number(b));
+  );
 
   const isWinner = premiosGanados.length > 0;
   // Each win is a separate row; the "ganador" column also holds the count
@@ -140,7 +128,6 @@ export const UserInfoCard = () => {
         ? "Si!"
         : `Si! Ganó ${vecesGanadas} veces`;
   const premioTexto = isWinner ? premiosGanados.join(" / ") : "Ninguno";
-  const fechasTexto = fechasGanadas.map(formatExcelDate).join(" - ");
 
   return (
     <main className="flex justify-center items-center mt-10 mx-4">
@@ -228,22 +215,6 @@ export const UserInfoCard = () => {
                 >
                   {ganadorTexto}
                 </span>
-
-                {isWinner && fechasGanadas.length > 0 && (
-                  <>
-                    <Label className="pt-2" htmlFor="fec_gan">
-                      {fechasGanadas.length > 1
-                        ? "Fechas de los sorteos"
-                        : "Fecha del sorteo"}
-                    </Label>
-                    <span
-                      id="fec_gan"
-                      className="text-white border border-gray-800 rounded p-2 font-medium"
-                    >
-                      {fechasTexto}
-                    </span>
-                  </>
-                )}
 
                 <Label className="pt-2" htmlFor="Premio">
                   Premio
