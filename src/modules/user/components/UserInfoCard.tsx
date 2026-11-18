@@ -100,26 +100,28 @@ export const UserInfoCard = () => {
   const hasValue = (value: string) =>
     Boolean(value) && value !== "undefined" && value !== "null";
 
-  const unique = (values: string[]) => Array.from(new Set(values));
-
   const premiosRows =
     user.premios && user.premios.length > 0
       ? user.premios
       : [{ fec_gan: user.fec_gan, pre_pen: user.pre_pen }];
 
-  const premiosGanados = unique(
-    premiosRows.map((p) => p.pre_pen).filter(hasValue)
-  );
-  // Win dates are only used to count wins, they are not shown to the user
-  const fechasGanadas = unique(
-    premiosRows.map((p) => p.fec_gan).filter(hasValue)
-  );
+  // One line per won prize (one per Excel row), oldest first, even when the
+  // prize text repeats; only exact duplicate rows are collapsed
+  const premiosGanados = premiosRows
+    .filter((p) => hasValue(p.pre_pen))
+    .filter(
+      (p, i, all) =>
+        all.findIndex(
+          (o) => o.fec_gan === p.fec_gan && o.pre_pen === p.pre_pen
+        ) === i
+    )
+    .sort((a, b) => Number(a.fec_gan) - Number(b.fec_gan))
+    .map((p) => p.pre_pen);
 
   const isWinner = premiosGanados.length > 0;
-  // Each win is a separate row; the "ganador" column also holds the count
-  const vecesGanadas = isWinner
-    ? Math.max(fechasGanadas.length, Number(user.ganador) || 0, 1)
-    : 0;
+  // Count only this bono's prize rows: the Excel "ganador" column counts wins
+  // per client, and a client can own several bonos
+  const vecesGanadas = premiosGanados.length;
 
   const ganadorTexto =
     vecesGanadas === 0
@@ -127,7 +129,7 @@ export const UserInfoCard = () => {
       : vecesGanadas === 1
         ? "Si!"
         : `Si! Ganó ${vecesGanadas} veces`;
-  const premioTexto = isWinner ? premiosGanados.join(" / ") : "Ninguno";
+  const premiosTexto = isWinner ? premiosGanados : ["Ninguno"];
 
   return (
     <main className="flex justify-center items-center mt-10 mx-4">
@@ -217,13 +219,17 @@ export const UserInfoCard = () => {
                 </span>
 
                 <Label className="pt-2" htmlFor="Premio">
-                  Premio
+                  {premiosGanados.length > 1 ? "Premios" : "Premio"}
                 </Label>
                 <span
                   id="Premio"
                   className="text-white border border-gray-800 rounded p-2 font-medium"
                 >
-                  {premioTexto}
+                  {premiosTexto.map((premio, index) => (
+                    <span key={index} className="block">
+                      {premio}
+                    </span>
+                  ))}
                 </span>
 
                 <Label className="pt-3" htmlFor="tel">
