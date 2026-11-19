@@ -39,6 +39,9 @@ const LoginModule = () => {
               @CentroretiradosGN
             </a>
           </div>
+          <span className="block mt-2 text-[10px] text-muted-foreground opacity-60">
+            Versión {__APP_VERSION__}
+          </span>
         </div>
       </div>
       <div className="w-full h-full flex items-center justify-center smMax:hidden mdMax:w-60 mdMax:h-auto mdMax:mt-10 bg-white mdMax:hidden">
